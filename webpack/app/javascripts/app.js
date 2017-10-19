@@ -64,6 +64,22 @@ window.App = {
     });
   },
 
+  showBalance: function() {
+    var self = this;
+
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return meta.getBalance.call(account, {from: account});
+    }).then(function(value) {
+      var balance_element = document.getElementById("balance");
+      balance_element.innerHTML = value.valueOf();
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error getting balance; see log.");
+    });
+  },
+
   sendCoin: function() {
     var self = this;
 
@@ -83,7 +99,41 @@ window.App = {
       console.log(e);
       self.setStatus("Error sending coin; see log.");
     });
-  }
+  },
+
+getBalance: function() {
+    var self = this;
+
+    var address = document.getElementById("id_address").value;
+
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return meta.getBalance.call(address, {from: address});
+    }).then(function(value) {
+      document.getElementById("balance_div").innerHTML = value.valueOf();
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error retrieving balance; see log.");
+    });
+},
+
+freeMoney: function() {
+    var self = this;
+
+    var address = document.getElementById("id_free_money_address").value;
+    var meta;
+    
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.freeMoney(address, {from: address});
+    }).then(function(value) {
+        document.getElementById("free_money_div").innerHTML = "Money added: " + value.valueOf();
+    }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error retrieving balance; see log.");
+    });
+}
 };
 
 window.addEventListener('load', function() {
