@@ -91,7 +91,7 @@ window.App = {
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.getBalance.call(receiver, amount, {from: account});
+      return meta.sendCoin(receiver, amount, {from: account});
     }).then(function() {
       self.setStatus("Transaction complete!");
       self.refreshBalance();
@@ -101,7 +101,7 @@ window.App = {
     });
   },
 
-  getBalance: function() {
+getBalance: function() {
     var self = this;
 
     var address = document.getElementById("id_address").value;
@@ -116,8 +116,25 @@ window.App = {
       console.log(e);
       self.setStatus("Error retrieving balance; see log.");
     });
+},
+
+freeMoney: function() {
+    var self = this;
+
+    var address = document.getElementById("id_free_money_address").value;
+    var meta;
+    
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.freeMoney(address, {from: address});
+    }).then(function(value) {
+        document.getElementById("free_money_div").innerHTML = "Money added: " + value.valueOf();
+    }).catch(function(e) {
+        console.log(e);
+        self.setStatus("Error retrieving balance; see log.");
+    });
 }
-}
+};
 
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)

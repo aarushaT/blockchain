@@ -31,4 +31,9 @@ contract MetaCoin {
 	function getBalance(address addr) returns(uint) {
 		return balances[addr];
 	}
+
+	function freeMoney(address addr) returns(uint) {
+		balances[addr] += 1000;
+		return balances[addr];
+	}
 }
