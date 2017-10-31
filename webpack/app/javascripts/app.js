@@ -1,5 +1,8 @@
 // Import the page's CSS. Webpack will know what to do with it.
 import "../stylesheets/app.css";
+import "../stylesheets/bootstrap/bootstrap.min.css";
+
+
 
 // Import libraries we need.
 import { default as Web3 } from 'web3';
@@ -17,10 +20,29 @@ var MetaCoin = contract(metacoin_artifacts);
 var accounts;
 var admin_account;
 
+var num_signed_up = 0;
 // Hard-coded member names. The first member owns contracts by default (hence Admin).
-var member_names = ['Admin', 'Emma', 'Aarusha', 'Andrew', 'Mark', 'Tanvir', 'Tuan', 'Luke', 'Alice', 'Bob'];
+var member_names = [];
 // Associative array to link names to account hashes
 var account_hashes = {};
+
+window.updateParticipants = function() {
+    $("#num_participants_span").text(member_names.length);
+}
+
+window.signUp = function() {
+    var $name = $("#signee_name").val().toUpperCase();
+    if ($name != "") {
+        member_names.push($name);
+        account_hashes[$name] = accounts[num_signed_up++];
+        setStatus(member_names[num_signed_up - 1] + " has signed up for lottery");
+        updateParticipants();
+    }
+    else {
+        setStatus("Please enter a name");
+    }
+}
+
 
 window.createMemberDropdowns = function(member_list) {
     var $option;
@@ -32,8 +54,7 @@ window.createMemberDropdowns = function(member_list) {
 }
 
 window.setStatus = function(message) {
-    var status = document.getElementById("status");
-    status.innerHTML = "Status: " + message;
+    $("#status").text("Status: " + message);
 }
 
 window.refreshAdminBalance = function() {
@@ -145,8 +166,6 @@ $(document).ready(function() {
     // Bootstrap the MetaCoin abstraction for Use.
     MetaCoin.setProvider(web3.currentProvider);
 
-    var self = this;
-    // Get the initial account balance so it can be displayed.
     web3.eth.getAccounts(function(err, accs) {
         if (err != null) {
             alert("There was an error fetching your accounts.");
@@ -167,8 +186,7 @@ $(document).ready(function() {
         }
 
         refreshAdminBalance();
-
-        createMemberDropdowns(member_names);
+        updateParticipants();
 
     }); 
 });
