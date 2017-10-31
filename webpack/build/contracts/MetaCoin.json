@@ -21,6 +21,32 @@
     },
     {
       "constant": false,
+      "inputs": [],
+      "name": "getTicketPrice",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "lottery_end",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
       "inputs": [
         {
           "name": "receiver",
@@ -45,6 +71,19 @@
       "constant": false,
       "inputs": [
         {
+          "name": "participant",
+          "type": "address"
+        }
+      ],
+      "name": "collectFunds",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "name": "addr",
           "type": "address"
         }
@@ -54,6 +93,32 @@
         {
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ticket_amount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "admin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -103,9 +168,33 @@
       ],
       "name": "Transfer",
       "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_from",
+          "type": "address"
+        }
+      ],
+      "name": "CollectedFunds",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "amount_won",
+          "type": "uint256"
+        }
+      ],
+      "name": "LotteryEnded",
+      "type": "event"
     }
   ],
-  "unlinked_binary": "0x6060604052341561000c57fe5b5b600160a060020a033216600090815260208190526040902061271090555b5b6102918061003b6000396000f300606060405263ffffffff60e060020a6000350416637bd703e8811461004257806390b98a1114610070578063d583220a146100a3578063f8b2cb4f146100d1575bfe5b341561004a57fe5b61005e600160a060020a03600435166100ff565b60408051918252519081900360200190f35b341561007857fe5b61008f600160a060020a0360043516602435610186565b604080519115158252519081900360200190f35b34156100ab57fe5b61005e600160a060020a036004351661021e565b60408051918252519081900360200190f35b34156100d957fe5b61005e600160a060020a0360043516610246565b60408051918252519081900360200190f35b600073__ConvertLib____________________________6396e4ee3d61012484610246565b60026000604051602001526040518363ffffffff1660e060020a028152600401808381526020018281526020019250505060206040518083038186803b151561016957fe5b6102c65a03f4151561017757fe5b5050604051519150505b919050565b600160a060020a033316600090815260208190526040812054829010156101af57506000610218565b600160a060020a0333811660008181526020818152604080832080548890039055938716808352918490208054870190558351868152935191937fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef929081900390910190a35060015b92915050565b600160a060020a038116600090815260208190526040902080546103e801908190555b919050565b600160a060020a0381166000908152602081905260409020545b9190505600a165627a7a7230582009823d74bfafbd02ef80ea5ad966cbd6bce5cd5ff6e2b1a2ddeaa1f76272565d0029",
+  "unlinked_binary": "0x606060405260c8600255341561001157fe5b5b60008054600160a060020a03191632600160a060020a039081169190911780835516815260016020526040902061271090555b5b610477806100556000396000f3006060604052361561007d5763ffffffff60e060020a6000350416637bd703e8811461007f57806387bb7ae0146100ad5780638e3599b3146100cf57806390b98a11146100f3578063be5a34b214610126578063d583220a14610144578063e5b55f2f14610172578063f851a44014610194578063f8b2cb4f146101c0575bfe5b341561008757fe5b61009b600160a060020a03600435166101ee565b60408051918252519081900360200190f35b34156100b557fe5b61009b610275565b60408051918252519081900360200190f35b34156100d757fe5b6100df61027c565b604080519115158252519081900360200190f35b34156100fb57fe5b6100df600160a060020a036004351660243561028c565b604080519115158252519081900360200190f35b341561012e57fe5b610142600160a060020a0360043516610326565b005b341561014c57fe5b61009b600160a060020a03600435166103d0565b60408051918252519081900360200190f35b341561017a57fe5b61009b610417565b60408051918252519081900360200190f35b341561019c57fe5b6101a461041d565b60408051600160a060020a039092168252519081900360200190f35b34156101c857fe5b61009b600160a060020a036004351661042c565b60408051918252519081900360200190f35b600073__ConvertLib____________________________6396e4ee3d6102138461042c565b60026000604051602001526040518363ffffffff1660e060020a028152600401808381526020018281526020019250505060206040518083038186803b151561025857fe5b6102c65a03f4151561026657fe5b5050604051519150505b919050565b6002545b90565b60005460a060020a900460ff1681565b600160a060020a033316600090815260016020526040812054829010156102b557506000610320565b600160a060020a03338116600081815260016020908152604080832080548890039055938716808352918490208054870190558351868152935191937fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef929081900390910190a35060015b92915050565b600054600160a060020a0382811691161480159061035e5750600254600160a060020a03821660009081526001602052604090205410155b151561036a5760006000fd5b60028054600160a060020a038084166000818152600160205260408082208054959095039094559354845490921684528284208054909201909155905190917f94f873b0014fe51f7afee29b20a8c5c44ab4e9d9447cd0d79f9be9f757855e9c91a25b50565b6000805433600160a060020a039081169116146103ed5760006000fd5b50600160a060020a038116600090815260016020526040902080546103e801908190555b5b919050565b60025481565b600054600160a060020a031681565b600160a060020a0381166000908152600160205260409020545b9190505600a165627a7a72305820329e86847fa895d9ac6aff839315ff498ec35ac36a55978abbe4ae20cdd436d60029",
   "networks": {
     "1508354067693": {
       "events": {
@@ -633,8 +722,400 @@
       },
       "address": "0x77e5ae44032961fecbb26cb670e17b87493f58ef",
       "updated_at": 1509128240339
+    },
+    "1509133195628": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0xf55b7b32580c537d99cbddfb3e1b41484076a560"
+      },
+      "address": "0xb08a50f99fdc5ae77b67e81be4c543724096242f",
+      "updated_at": 1509133205762
+    },
+    "1509133283199": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0xad8b1c2c6d2c449a602fde6f16dc36e1e682751d"
+      },
+      "address": "0x51248848aa456e4a57197cd939bd21c1eca19aca",
+      "updated_at": 1509133293196
+    },
+    "1509369727099": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0x94f873b0014fe51f7afee29b20a8c5c44ab4e9d9447cd0d79f9be9f757855e9c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            }
+          ],
+          "name": "CollectedFunds",
+          "type": "event"
+        },
+        "0xe28742282056724e602056f6aa9ca3b96df0f2aaced985aacac5b0a789a40a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "amount_won",
+              "type": "uint256"
+            }
+          ],
+          "name": "LotteryEnded",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0x4eeb9cbca9007d6602fd2068c20cb4716a477f16"
+      },
+      "address": "0xf02e72ca486f0999c4de5c5d7d2dce50a585906c",
+      "updated_at": 1509389184073
+    },
+    "1509392174040": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0x94f873b0014fe51f7afee29b20a8c5c44ab4e9d9447cd0d79f9be9f757855e9c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            }
+          ],
+          "name": "CollectedFunds",
+          "type": "event"
+        },
+        "0xe28742282056724e602056f6aa9ca3b96df0f2aaced985aacac5b0a789a40a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "amount_won",
+              "type": "uint256"
+            }
+          ],
+          "name": "LotteryEnded",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0x1e50d09e3d12f85da34fda8bd628f0b0295eb300"
+      },
+      "address": "0x478d49a251d8c37dd347f07f7a5930e48da780f7",
+      "updated_at": 1509392407877
+    },
+    "1509392922066": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0x94f873b0014fe51f7afee29b20a8c5c44ab4e9d9447cd0d79f9be9f757855e9c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            }
+          ],
+          "name": "CollectedFunds",
+          "type": "event"
+        },
+        "0xe28742282056724e602056f6aa9ca3b96df0f2aaced985aacac5b0a789a40a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "amount_won",
+              "type": "uint256"
+            }
+          ],
+          "name": "LotteryEnded",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0xa85d5d5d1f4041d6edafb0218343d10e7cfa0497"
+      },
+      "address": "0xd12e24aaa2ac9523c764fe8d3a3d02a4bc962e16",
+      "updated_at": 1509393221683
+    },
+    "1509393696286": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0x94f873b0014fe51f7afee29b20a8c5c44ab4e9d9447cd0d79f9be9f757855e9c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            }
+          ],
+          "name": "CollectedFunds",
+          "type": "event"
+        },
+        "0xe28742282056724e602056f6aa9ca3b96df0f2aaced985aacac5b0a789a40a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "amount_won",
+              "type": "uint256"
+            }
+          ],
+          "name": "LotteryEnded",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0x348877fa4349b04541591450ef555fa1747d0016"
+      },
+      "address": "0x1e851b7574046e1e71cb6a284448f871e2d4a073",
+      "updated_at": 1509393738962
+    },
+    "1509409669876": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0x94f873b0014fe51f7afee29b20a8c5c44ab4e9d9447cd0d79f9be9f757855e9c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            }
+          ],
+          "name": "CollectedFunds",
+          "type": "event"
+        },
+        "0xe28742282056724e602056f6aa9ca3b96df0f2aaced985aacac5b0a789a40a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "amount_won",
+              "type": "uint256"
+            }
+          ],
+          "name": "LotteryEnded",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0xf3469468a0b50a6a1931378d82e08b03b6f4387f"
+      },
+      "address": "0x267e97fe25386d39c408b1947b88f7fa0a8da74d",
+      "updated_at": 1509409696344
+    },
+    "1509469544207": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0x94f873b0014fe51f7afee29b20a8c5c44ab4e9d9447cd0d79f9be9f757855e9c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            }
+          ],
+          "name": "CollectedFunds",
+          "type": "event"
+        },
+        "0xe28742282056724e602056f6aa9ca3b96df0f2aaced985aacac5b0a789a40a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "amount_won",
+              "type": "uint256"
+            }
+          ],
+          "name": "LotteryEnded",
+          "type": "event"
+        }
+      },
+      "links": {
+        "ConvertLib": "0xa586c2d846b65e7b1095edc588270d26ab677621"
+      },
+      "address": "0x9c5913401de06924f93293b762fa5f32e4f9cbbf",
+      "updated_at": 1509469557270
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1509128240339
+  "updated_at": 1509469557270
 }
