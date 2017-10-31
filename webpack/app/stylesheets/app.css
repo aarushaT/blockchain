@@ -1,52 +1,30 @@
 body {
-  margin-left: 25%;
-  margin-right: 25%;
-  margin-top: 10%;
   font-family: "Open Sans", sans-serif;
-}
-
-label {
-  display: inline-block;
-  width: 100px;
+  font-size: 1.5rem;
 }
 
 input {
   width: 500px;
   padding: 5px;
-  font-size: 16px;
+  font-size: 2rem;
 }
 
-button {
-  font-size: 16px;
-  padding: 5px;
+.green {
+  color: #18980e;
 }
 
-h1, h2 {
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 0px;
-  margin-bottom: 10px;
-}
-
-h2 {
-  color: #AAA;
-  font-size: 32px;
-}
-
-h3 {
-  font-weight: normal;
-  color: #AAA;
-  font-size: 24px;
-}
-
-.black {
-  color: black;
-}
-
-#balance {
-  color: black;
+#balance, #balance_span {
+  color: #18980e;
 }
 
 .hint {
-  color: #666;
+  color: #555555;
+}
+
+#account_hashes {
+  font-size: 1rem;
+}
+
+#num_participants_span {
+  color: #fd8508;
 }
