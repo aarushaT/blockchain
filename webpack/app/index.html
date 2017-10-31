@@ -3,29 +3,38 @@
 
 <head>
     <title>MetaCoin - Truffle Webpack Demo w/ Frontend</title>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<!--     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1 class="mt-5">MetaCoin</h1>
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <div class="col text-center">
+                <h1>Lottery</h1>
                 <hr/>
-                <h2 class="my-5">Admin has <span class="green"><span id="balance"></span> META</span></h2>
-                <h3><strong>Send MetaCoin</strong></h3>
+            </div>            
+        </div>
+        <div class="row" style="border: 1px solid black">
+            <div class="col text-center">
+                <h2>Pool has <span class="green"><span id="balance"></span> META</span></h2>
+            </div>
+        </div>
+            <div class="alert alert-info">We currently have <span id="num_participants_span"></span>&nbsp;participants</div>
+        <div class="row p-5">
+            <div class="col" style="border: 1px solid black">
+                <h3><strong>Sign Up For Lottery</strong></h3>               
                 <div class="row form-group">
-                    <label for="amount" class="col-4 col-form-label">Amount:</label>
-                    <input type="text" class="col-8 form-control" id="amount" placeholder="e.g., 95"></input>
-                    <label for="receiver" class="col-4 col-form-label">To Member:</label>
-                    <select type="text" class="col-8 form-control member_select" id="id_receiver"></select>            
-                    <button class="btn btn-primary btn-lg btn-block my-3" id="send" onclick="sendCoin()">Send MetaCoin</button>
+                    <label for="amount" class="col-4 col-form-label">Name:</label>
+                    <input type="text" class="col-8 form-control" id="signee_name" placeholder="e.g., Emma"></input>
+                    <!-- <label for="receiver" class="col-4 col-form-label">To Member:</label>
+                    <select type="text" class="col-8 form-control member_select" id="id_receiver"></select> -->            
+                    <button class="btn btn-primary btn-lg btn-block my-3" id="sign_up_button" onclick="signUp()">Sign Up</button>
                 </div>
-                <h3><strong>Check MetaCoin Balance</strong></h3>
+                <h3><strong>Check Your Balance</strong></h3>
                 <div class="row form-group">
-                    <label for="id_member" class="col-4 col-form-label">Member:</label>
-                    <select type="text" class="col-8 form-control member_select" id="id_member"></select>
+                    <label for="id_name" class="col-4 col-form-label">Your Name:</label>
+                    <input type="text" class="col-8 form-control" id="id_name" placeholder="e.g., Emma"></input>
                     <button class="btn btn-primary btn-lg btn-block my-3" id="send" onclick="getBalance()">Check Balance</button>
                     <div class="d-block alert alert-light p-0" id="balance_span"></div>
                 </div>
@@ -34,7 +43,7 @@
                     <div class="d-block alert alert-light p-0" id="account_hashes_status"></div>
                 </div>
             </div>
-            <div class="col h-100">
+            <div class="col h-100" style="border: 1px solid black">
                 <div class="row mt-5 p-2">                    
                     <div class="alert" id="status">Status: </div>          
                 </div>
@@ -45,9 +54,9 @@
         </div>
     </div>
 </body>
-<script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+<!-- <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
 <script src="./app.js"></script>
 
 </html>

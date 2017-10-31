@@ -24,3 +24,7 @@ input {
 #account_hashes {
   font-size: 1rem;
 }
+
+#num_participants_span {
+  color: #fd8508;
+}
