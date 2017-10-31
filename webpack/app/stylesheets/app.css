@@ -1,0 +1,26 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.5rem;
+}
+
+input {
+  width: 500px;
+  padding: 5px;
+  font-size: 2rem;
+}
+
+.green {
+  color: #18980e;
+}
+
+#balance, #balance_span {
+  color: #18980e;
+}
+
+.hint {
+  color: #555555;
+}
+
+#account_hashes {
+  font-size: 1rem;
+}

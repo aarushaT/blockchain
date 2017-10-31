@@ -1,0 +1,5 @@
+*.sublime-workspace
+*.sublime-project
+yarn-error.log
+*.orig
+*.swp
