@@ -9,8 +9,6 @@ import "./ConvertLib.sol";
 
 contract MetaCoin {
 
-
-
     struct Account {
         uint balance;
     }
@@ -21,13 +19,12 @@ contract MetaCoin {
 
     mapping (address => Account) accounts;
 
-
-    uint public ticket_amount = 200; //meta
+    uint public ticket_amount = 256;
     uint public number_participants; //number participants in the pool
     //uint random_number = uint(block.blockhash(block.number-1))%10 + 1 //random number for lottery
 
-    address [] PublicAccounts; 
-
+    address [] PublicAccounts;
+    
     //Smart contract events
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from); //collect money from 
@@ -39,9 +36,15 @@ contract MetaCoin {
         _;
     }
 
+    // modifier not_more() {
+    //     require (PublicAccounts.length <= number_participants);
+    //     _;
+    // }
+
     function MetaCoin() {
         admin = tx.origin;
         accounts[admin].balance = 10000;
+        counter = 0;
     }
 
     function sendCoin(address receiver, uint amount) returns(bool sufficient) {
@@ -69,26 +72,27 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function setParticipants(uint num) only_admin returns (uint){
-
+    function setParticipants(uint num) only_admin returns (uint) {
         number_participants = num;  
-        return number_participants; 
+        return number_participants;
     }
 
 
     function collectFunds() only_admin {
-
-      address participant = 0xe37dc14a4b4b79497363a67aafad622a2c48dc2b; 
-
-      for (uint i=0; i<number_participants; i++)  {
-
-        require((participant != admin) && (accounts[participant].balance >= ticket_amount));
-        accounts[participant].balance -= ticket_amount;
-        accounts[admin].balance += ticket_amount;
-        CollectedFunds(participant);
-        lottery_end = true; 
+        address participant = PublicAccounts[0]; 
+        //0xe37dc14a4b4b79497363a67aafad622a2c48dc2b
+        for (uint i=0; i<number_participants; i++)  {
+            require((participant != admin) && (accounts[participant].balance >= ticket_amount));
+            accounts[participant].balance -= ticket_amount;
+            accounts[admin].balance += ticket_amount;
+            CollectedFunds(participant);
+            lottery_end = true;
         }
+    }
 
+    function addAddress(address member_address) returns(uint) {
+        PublicAccounts.push(member_address);
+        return PublicAccounts.length;
     }
 
 

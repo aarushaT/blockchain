@@ -1,8 +1,6 @@
 // Import the page's CSS. Webpack will know what to do with it.
 import "../stylesheets/app.css";
 
-
-
 // Import libraries we need.
 import { default as Web3 } from 'web3';
 import { default as contract } from 'truffle-contract'
@@ -21,9 +19,11 @@ var admin_account;
 
 var num_signed_up = 0;
 // Hard-coded member names. The first member owns contracts by default (hence Admin).
-var member_names = [];
+var member_emails = [];
 // Associative array to link names to account hashes
 var account_hashes = {};
+
+var num_participants;
 
 window.updateParticipants = function() {
     $("#num_participants_span").text(member_names.length);
@@ -150,16 +150,26 @@ window.printAccounts = function() {
     }
 }
 
-
-window.setParticipants = function() {
-    var number_participants = document.getElementById("number_of_participants").value;
+// Add participant's address to contract
+window.addAddress = function() {
+    var email = $("#participant_email").val();
+    member_emails.push(email);
+    
+    var address = accounts[++num_participants];
+    account_hashes[email] = address;
+    
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.setParticipants.call(number_participants);
-    }); 
+        return meta.addAddress(address.toString(), {from:admin_account});
+    }).then(function (result) {
+        console.log(result.valueOf());
+    }).catch(function(e) {
+        console.log(e);
+        setStatus("Could not call addAddress properly.");
+    });
 
-    console.log("there are " + number_participants + " participants in the pool");
+    //console.log("there are " + number_participants + " participants in the pool");
 }
 
 window.collectFunds = function() {
@@ -202,14 +212,16 @@ $(document).ready(function() {
 
         accounts = accs;
         admin_account = accounts[0];
-
         // Assign account hashes to member names
-        for (var i = 0; i < member_names.length; i++) {
-            account_hashes[member_names[i]] = accounts[i];
-        }
+        // for (var i = 0; i < member_names.length; i++) {
+        //     account_hashes[member_names[i]] = accounts[i];
+        // }
 
-        refreshAdminBalance();
-        updateParticipants();
+        // refreshAdminBalance();
+        // updateParticipants();
+
 
     });
+        
+    num_participants = 0;
 });
