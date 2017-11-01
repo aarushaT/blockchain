@@ -1,6 +1,5 @@
 // Import the page's CSS. Webpack will know what to do with it.
 import "../stylesheets/app.css";
-import "../stylesheets/bootstrap/bootstrap.min.css";
 
 
 
@@ -88,7 +87,7 @@ window.showBalance = function() {
 window.sendCoin = function() {
     var amount = parseInt(document.getElementById("amount").value);
     var receiver = document.getElementById("id_receiver").value;
-    
+
     if (receiver == admin_account) {
         setStatus("Error - Cannot send money to yourself");
         return;
@@ -117,7 +116,7 @@ window.getBalance = function() {
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
         return meta.getBalance.call(member, { from: member });
-    }).then(function(value) {        
+    }).then(function(value) {
         balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
     }).catch(function(e) {
         balance_element.innerHTML = e;
@@ -150,6 +149,30 @@ window.printAccounts = function() {
         $("#account_hashes_status").text(err.message);
     }
 }
+
+
+window.setParticipants = function() {
+    var number_participants = document.getElementById("number_of_participants").value;
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.setParticipants.call(number_participants);
+    }); 
+
+    console.log("there are " + number_participants + " participants in the pool");
+}
+
+window.collectFunds = function() {
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.collectFunds.call();
+    }); 
+
+    console.log("we just collected funds!");
+}
+
+
 
 $(document).ready(function() {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
@@ -188,5 +211,5 @@ $(document).ready(function() {
         refreshAdminBalance();
         updateParticipants();
 
-    }); 
+    });
 });

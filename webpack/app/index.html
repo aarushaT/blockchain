@@ -11,9 +11,9 @@
     <div class="container-fluid">
         <div class="row mt-3">
             <div class="col text-center">
-                <h1>Lottery</h1>
+                <h1> Empire Lottery Application</h1>
                 <hr/>
-            </div>            
+            </div>
         </div>
         <div class="row" style="border: 1px solid black">
             <div class="col text-center">
@@ -23,34 +23,44 @@
             <div class="alert alert-info">We currently have <span id="num_participants_span"></span>&nbsp;participants</div>
         <div class="row p-5">
             <div class="col" style="border: 1px solid black">
-                <h3><strong>Sign Up For Lottery</strong></h3>               
+                <h3><strong>New User</strong></h3>
                 <div class="row form-group">
                     <label for="amount" class="col-4 col-form-label">Name:</label>
                     <input type="text" class="col-8 form-control" id="signee_name" placeholder="e.g., Emma"></input>
                     <!-- <label for="receiver" class="col-4 col-form-label">To Member:</label>
-                    <select type="text" class="col-8 form-control member_select" id="id_receiver"></select> -->            
+                    <select type="text" class="col-8 form-control member_select" id="id_receiver"></select> -->
                     <button class="btn btn-primary btn-lg btn-block my-3" id="sign_up_button" onclick="signUp()">Sign Up</button>
                 </div>
-                <h3><strong>Check Your Balance</strong></h3>
+                <h3><strong>Existing User</strong></h3>
+                <h2><strong>Check Your Balance</strong></h2>
                 <div class="row form-group">
                     <label for="id_name" class="col-4 col-form-label">Your Name:</label>
                     <input type="text" class="col-8 form-control" id="id_name" placeholder="e.g., Emma"></input>
                     <button class="btn btn-primary btn-lg btn-block my-3" id="send" onclick="getBalance()">Check Balance</button>
                     <div class="d-block alert alert-light p-0" id="balance_span"></div>
                 </div>
+                <h2>Withdraw Money </h2>
                 <div class="row form-group">
                     <button class="btn btn-primary btn-lg btn-block my-3" id="print_accounts_button" onclick="printAccounts()">Print Accounts</button>
                     <div class="d-block alert alert-light p-0" id="account_hashes_status"></div>
                 </div>
             </div>
             <div class="col h-100" style="border: 1px solid black">
-                <div class="row mt-5 p-2">                    
-                    <div class="alert" id="status">Status: </div>          
+                <div class="row mt-5 p-2">
+                    <div class="alert" id="status">Status: </div>
                 </div>
                 <div class="row">
-                    <div class="alert" id="account_hashes"></div>                    
+                    <div class="alert" id="account_hashes"></div>
                 </div>
-            </div>            
+
+                <div class="row">
+                <label for="amount" class="col-4 col-form-label">Number of Participants</label>
+                    <input type="number" class="col-8 form-control" id="number_of_participants" placeholder="e.g., 4"></input> 
+                    <button class="btn btn-primary btn-lg btn-block my-3" id="add_participants" onclick="setParticipants()">Add Participants</button>
+
+                     <label for="amount" class="col-4 col-form-label">Collect Funds</label>
+                    <button class="btn btn-primary btn-lg btn-block my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
+               </div>
         </div>
     </div>
 </body>
