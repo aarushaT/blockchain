@@ -3,3 +3,7 @@
 yarn-error.log
 *.orig
 *.swp
+webpack/node_modules
+webpack/node_modules/**
+webpack/build/contracts
+webpack/build/contracts/*
