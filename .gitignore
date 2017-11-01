@@ -1,6 +1,8 @@
 *.sublime-workspace
 *.sublime-project
-node_modules
+webpack/node_modules/**
+webpack/node_modules
+**/node_modules/
 yarn-error.log
 *.orig
 *.swp
