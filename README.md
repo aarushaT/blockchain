@@ -1,8 +1,17 @@
 # To start test env
 
 ## Starting for the first time
+
+### From scratch
 1. cd into an empty directory
 2. Run `truffle init webpack`
+
+### If using repository
+1. clone repository into folder `git clone -o origin https://github.com/aarushaT/blockchain.git`
+2. Run `cd blockchain/webpack`
+3. Run `npm install` to install required node modules 
+
+#### **Always remember to run npm install when you checkout from repository**
 
 ## Building and the frontend
 1. Start `testrpc` in a command window

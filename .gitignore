@@ -2,7 +2,7 @@
 *.sublime-project
 webpack/node_modules/**
 webpack/node_modules
-**/node_modules/
+webpack/build/contracts/*
 yarn-error.log
 *.orig
 *.swp
