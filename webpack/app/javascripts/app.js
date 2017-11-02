@@ -27,6 +27,8 @@ var num_participants;
 
 window.updateParticipants = function() {
     $("#num_participants_span").text(member_names.length);
+    var participants = $("#num_participants_span").text(member_names.length).value;
+    SetStatus("There are " + participants + " participants in the pool"); 
 }
 
 window.signUp = function() {
@@ -152,7 +154,6 @@ window.printAccounts = function() {
 
 // Add participant's address to contract
 window.addMember = function() {
-    //console.log("is this working?"); 
     var email = $("#participant_email").val();
     member_emails.push(email);
     
@@ -162,19 +163,16 @@ window.addMember = function() {
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        console.log("this is meta" + meta); 
-        return meta.addMember(address.toString(), email,{from:admin_account, gas:300000});
+        return meta.addMember(address.toString(), {from:admin_account});
     }).then(function (result) {
         console.log(result.valueOf());
-        //setStatus(email + 's account was added')
-        getParticipantCount();
     }).catch(function(e) {
         console.log(e);
         setStatus("Could not call addAddress properly.");
     });
+
+    //console.log("there are " + number_participants + " participants in the pool");
 }
-
-
 
 window.getParticipantCount = function () {
     var meta;
@@ -182,22 +180,21 @@ window.getParticipantCount = function () {
         meta = instance;
         return meta.getParticipantCount.call();
     }).then(function (result) {
-        console.log(result.valueOf() + " participants");
+        console.log(result.valueOf());
     }).catch(function (err) {
         console.log(err);
         setStatus("Could not call getParticipantCount properly.");
     });
 }
 
-
 window.collectFunds = function() {
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
         return meta.collectFunds.call();
-    }).then(function (result) {
-        console.log(result.valueOf()); 
     }); 
+
+    console.log("we just collected funds!");
 }
 
 
