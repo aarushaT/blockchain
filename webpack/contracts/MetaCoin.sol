@@ -38,7 +38,7 @@ contract MetaCoin {
         accounts[admin].balance = 10000;
         initialAccountBalance = 1000;
         accounts[admin].name = "Administrator";
-        accounts[Admin].exists = true;
+        accounts[admin].exists = true;
     }
 
     function sendCoin(address receiver, uint amount) returns(bool sufficient) {
@@ -84,11 +84,11 @@ contract MetaCoin {
         return false;
     }
 
-    function isUnique(address addr) returns(bool) {
-        if (accounts[addr].name != "") {
-            return false;
+    function isUnique(address addr) internal returns(bool) {
+        if (!accounts[addr].exists) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     function getParticipantCount() returns(uint) {
