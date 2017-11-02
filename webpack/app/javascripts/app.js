@@ -151,7 +151,7 @@ window.printAccounts = function() {
 }
 
 // Add participant's address to contract
-window.addAddress = function() {
+window.addMember = function() {
     var email = $("#participant_email").val();
     member_emails.push(email);
     
@@ -161,16 +161,31 @@ window.addAddress = function() {
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.addAddress(address.toString(), {from:admin_account});
+        return meta.addMember(address.toString(), email,{from:admin_account});
     }).then(function (result) {
         console.log(result.valueOf());
+        getParticipantCount();
     }).catch(function(e) {
         console.log(e);
         setStatus("Could not call addAddress properly.");
     });
-
-    //console.log("there are " + number_participants + " participants in the pool");
 }
+
+
+
+window.getParticipantCount = function () {
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.getParticipantCount.call();
+    }).then(function (result) {
+        console.log(result.valueOf());
+    }).catch(function (err) {
+        console.log(err);
+        setStatus("Could not call getParticipantCount properly.");
+    });
+}
+
 
 window.collectFunds = function() {
     var meta;
