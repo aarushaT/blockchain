@@ -19,6 +19,8 @@ contract MetaCoin {
     mapping (address => Account) accounts;
     uint public ticket_amount = 200; //meta
 
+    address[] PublicAccounts;
+
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from);
     event LotteryEnded(uint amount_won);
@@ -63,5 +65,10 @@ contract MetaCoin {
         accounts[participant].balance -= ticket_amount;
         accounts[admin].balance += ticket_amount;
         CollectedFunds(participant);
+    }
+
+    function addAddress(address member_address) {
+        PublicAccounts.push(member_address);
+        return PublicAccounts.length;
     }
 }

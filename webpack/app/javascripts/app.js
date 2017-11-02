@@ -19,9 +19,11 @@ var admin_account;
 
 var num_signed_up = 0;
 // Hard-coded member names. The first member owns contracts by default (hence Admin).
-var member_names = [];
+var member_emails = [];
 // Associative array to link names to account hashes
 var account_hashes = {};
+
+var num_participants;
 
 window.updateParticipants = function() {
     $("#num_participants_span").text(member_names.length);
@@ -85,7 +87,7 @@ window.showBalance = function() {
 window.sendCoin = function() {
     var amount = parseInt(document.getElementById("amount").value);
     var receiver = document.getElementById("id_receiver").value;
-    
+
     if (receiver == admin_account) {
         setStatus("Error - Cannot send money to yourself");
         return;
@@ -114,7 +116,7 @@ window.getBalance = function() {
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
         return meta.getBalance.call(member, { from: member });
-    }).then(function(value) {        
+    }).then(function(value) {
         balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
     }).catch(function(e) {
         balance_element.innerHTML = e;
@@ -148,6 +150,40 @@ window.printAccounts = function() {
     }
 }
 
+// Add participant's address to contract
+window.addAddress = function() {
+    var email = $("#participant_email").val();
+    member_emails.push(email);
+    
+    var address = accounts[++num_participants];
+    account_hashes[email] = address;
+    
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.addAddress(address.toString(), {from:admin_account});
+    }).then(function (result) {
+        console.log(result.valueOf());
+    }).catch(function(e) {
+        console.log(e);
+        setStatus("Could not call addAddress properly.");
+    });
+
+    //console.log("there are " + number_participants + " participants in the pool");
+}
+
+window.collectFunds = function() {
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.collectFunds.call();
+    }); 
+
+    console.log("we just collected funds!");
+}
+
+
+
 $(document).ready(function() {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof web3 !== 'undefined') {
@@ -176,14 +212,16 @@ $(document).ready(function() {
 
         accounts = accs;
         admin_account = accounts[0];
-
         // Assign account hashes to member names
-        for (var i = 0; i < member_names.length; i++) {
-            account_hashes[member_names[i]] = accounts[i];
-        }
+        // for (var i = 0; i < member_names.length; i++) {
+        //     account_hashes[member_names[i]] = accounts[i];
+        // }
 
-        refreshAdminBalance();
-        updateParticipants();
+        // refreshAdminBalance();
+        // updateParticipants();
 
-    }); 
+
+    });
+        
+    num_participants = 0;
 });
