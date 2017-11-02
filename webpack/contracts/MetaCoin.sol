@@ -73,13 +73,15 @@ contract MetaCoin {
         CollectedFunds(participant);
     }
 
-    function addMember(address member_address, string member_name) {
+    function addMember(address member_address, string member_name) returns(bool) {
         if (isUnique(member_address)) {
             members.push(member_address);
             accounts[member_address].balance = initialAccountBalance;
             accounts[member_address].name = member_name;
             accounts[member_address].exists = true;
+            return true;
         }
+        return false;
     }
 
     function isUnique(address addr) returns(bool) {
