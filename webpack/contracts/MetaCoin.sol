@@ -67,7 +67,7 @@ contract MetaCoin {
         CollectedFunds(participant);
     }
 
-    function addAddress(address member_address) {
+    function addAddress(address member_address) returns(uint) {
         PublicAccounts.push(member_address);
         return PublicAccounts.length;
     }
