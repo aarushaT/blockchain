@@ -19,6 +19,7 @@ contract MetaCoin {
     bool public lottery_end;
 
     mapping (address => Account) accounts;
+    uint max_members;
     uint public ticket_amount = 200; //meta
     uint initialAccountBalance;
 
@@ -39,6 +40,7 @@ contract MetaCoin {
         initialAccountBalance = 1000;
         accounts[admin].name = "Administrator";
         accounts[admin].exists = true;
+        max_members = 10;
     }
 
     function sendCoin(address receiver, uint amount) returns(bool sufficient) {
@@ -66,15 +68,19 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function collectFunds(address participant) only_admin {
-        //require((participant != admin) && (accounts[participant].balance >= ticket_amount));
-        accounts[participant].balance -= ticket_amount;
-        accounts[admin].balance += ticket_amount;
-        CollectedFunds(participant);
+    function collectFunds() only_admin returns(bool) {
+        if (members.length > 0) {
+            for(uint i = 0; i < members.length; i++) {
+                accounts[members[i]].balance -= ticket_amount;
+                CollectedFunds(members[i]);
+            }
+            return true;
+        }
+        return false;    
     }
 
     function addMember(address member_address, string member_name) returns(bool) {
-        if (isUnique(member_address)) {
+        if (members.length < max_members) {
             members.push(member_address);
             accounts[member_address].balance = initialAccountBalance;
             accounts[member_address].name = member_name;
@@ -84,12 +90,12 @@ contract MetaCoin {
         return false;
     }
 
-    function isUnique(address addr) internal returns(bool) {
-        if (!accounts[addr].exists) {
-            return true;
-        }
-        return false;
-    }
+    // function isUnique(address addr) internal returns(bool) {
+    //     if (!accounts[addr].exists) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     function getParticipantCount() returns(uint) {
         return members.length;

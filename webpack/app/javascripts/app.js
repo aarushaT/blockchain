@@ -159,15 +159,14 @@ window.addMember = function() {
     account_hashes[email] = address;
     
     var meta;
+    var tx_hash;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.addMember(address.toString(), email,{from:admin_account});
-    }).then(function (result) {
-        console.log(result.valueOf());
-        getParticipantCount();
+        tx_hash = meta.addMember(address.toString(), email, {from:admin_account, gas: 150000});
+        console.log("Transaction Hash = " + tx_hash);
     }).catch(function(e) {
         console.log(e);
-        setStatus("Could not call addAddress properly.");
+        setStatus("Could not call addMember properly.");
     });
 }
 
@@ -189,12 +188,23 @@ window.getParticipantCount = function () {
 
 window.collectFunds = function() {
     var meta;
+    var tx_hash;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
         return meta.collectFunds.call();
-    }); 
-
-    console.log("we just collected funds!");
+    }).then(function(result) {
+        console.log(result);
+        if (result.valueOf() == true) {
+            tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
+            console.log(tx_hash);
+        }
+        else {
+            console.log("Failed to collect")
+        }
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Collect funds failed");
+    });    
 }
 
 

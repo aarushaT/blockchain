@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="row mt-3">
             <div class="col text-center">
-                <h1> Empire Life Blockchain Lottery Application</h1> 
+                <h1>Empire Life Blockchain Lottery Application</h1> 
                 <img class="img-fluid" src="app\images\lotto.png" alt="lottery">
                 <hr/>
             </div>
@@ -24,31 +24,31 @@
         </div>
 
         <div id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="card">
-    <div class="card-header text-center" role="tab" id="headingOne">
-      <h5 class="mb-0">
-        <a class="rules-header" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          The Rules <i class="fa fa-info-circle" aria-hidden="true"></i>
-        </a>
-      </h5>
-    </div>
+            <div class="card">
+                <div class="card-header text-center" role="tab" id="headingOne">
+                    <h5 class="mb-0">
+                        <a class="rules-header" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        The Rules (click to view)<i class="fa fa-info-circle" aria-hidden="true"></i>
+                        </a>
+                    </h5>
+                </div>
 
-    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
-      <div class="card-block small-text">
-        <h4><strong>Welcome to the Empire Life Blockchain Lottery Application!</strong></h4>
-        Here are the rules: 
-        <ol>
-            <li>Each ticket costs 200 ether (a cryptocurrency) </li>
-            <li>Draws will occur twice a week on Wednesdays and Saturdays</li>
-            <li>Upon sign up, each user will have 1000 ethere deposited<br> 
-            in their account</li>
+                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-block small-text">
+                        <h4><strong>Welcome to the Empire Life Blockchain Lottery Application!</strong></h4>
+                        Here are the rules: 
+                        <ol>
+                            <li>Each ticket costs 200 ether (a cryptocurrency) </li>
+                            <li>Draws will occur twice a week on Wednesdays and Saturdays</li>
+                            <li>Upon sign up, each user will have 1000 ether deposited<br> 
+                            in their account</li>
 
-        </ol>    
+                        </ol>    
 
-    </div>
-  </div>
-</div>
-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
             
         <div class="row p-5">
@@ -56,12 +56,11 @@
                 <h2 class = text-center>User Functions<br></h2><br>
                 <div class="row form-group">
                     <div class="col">
-
                         <h3>New Users</h3>
                         <h4><strong>Sign Up</strong></h4>
                         <h5>Enter your email:</h5>
                         <input type="text" class="form-control form-control-lg" id="participant_email" placeholder="e.g. emma.swarney@example.com"></input>
-                        <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addAddress()">Sign Up</button>
+                        <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addMember()">Sign Up</button>
                     </div>
                 </div> 
                 <br>                  
@@ -101,30 +100,31 @@
                 <h2 class = text-center>Admin Functions<br></h2>
                     <div class="row form-group">
                      <div class="col"> 
-                        <br><br><br>
+                        <br><br>
                
 
-                    <h4><strong>Set Ticket Price</strong></h3>
-                    
-                        <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
-                        <br>
-                        <button class="btn btn-primary btn-lg btn-block my-3">Set Price</button>
-                        <br>
-                        <br>
+                        <h4><strong>Set Ticket Price</strong></h4>
+                        
+                            <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
+                            <br>
+                            <button class="btn btn-primary btn-lg btn-block my-3">Set Price</button>
+                            <br>
+                            <br>
 
-                    <h4><strong>Collect Funds</strong></h3>
+                        <h4><strong>Collect Funds</strong></h4>
 
-                        <h5>Click when ready to collect funds for lottery draw</h5>
-                        <button class="btn btn-primary btn-lg btn-block my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
-                        <br>
-                        <br>
+                            <h5>Click when ready to collect funds for lottery draw</h5>
+                            <button class="btn btn-primary btn-lg btn-block my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
+                            <br>
+                            <br>
 
-                    <h4><strong>Distribute Winnings</strong></h3>
+                        <h4><strong>Distribute Winnings</strong></h4>
 
-                        <h5>Click when ready to distribute lottery winnings</h5>
-                        <button class="btn btn-primary btn-lg btn-block my-3">Distribute Winnings</button>    
-               
-           </div>
+                            <h5>Click when ready to distribute lottery winnings</h5>
+                            <button class="btn btn-primary btn-lg btn-block my-3">Distribute Winnings</button> 
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
