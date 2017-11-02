@@ -28,3 +28,11 @@ input {
 #num_participants_span {
   color: #fd8508;
 }
+
+.rules-header{
+font-size: 28px; 
+color: #0d377a;
+text-decoration: none; 
+
+
+}
