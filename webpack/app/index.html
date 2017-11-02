@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="row mt-3">
             <div class="col text-center">
-                <h1> Empire Lottery Application</h1> 
+                <h1> Empire Life Blockchain Lottery Application</h1> 
                 <img class="img-fluid" src="app\images\lotto.png" alt="lottery">
                 <hr/>
             </div>
@@ -38,9 +38,10 @@
         Welcome to the Empire Life Blockchain Lottery Application! 
         <br>Here are the rules: 
         <ol>
-            <li>This is a blockchain app. You will have to use ethereum </li>
-            <li>Rule number two </li>
-            <li>rule number three</li>
+            <li>Each ticket costs 200 ether (a cryptocurrency) </li>
+            <li>Draws will occur twice a week on Wednesdays and Saturdays</li>
+            <li>Upon sign up, each user will have 1000 ethere deposited<br> 
+            in their account</li>
 
         </ol>    
 
@@ -51,53 +52,82 @@
 
             
         <div class="row p-5">
-            <div class="col" style="border: 1px solid black">
-                <h2>New to the Pool?<br/> Sign Up!</h2>
+            <div class="col">
+                <h2 class = text-center>User Functions<br></h2><br>
                 <div class="row form-group">
                     <div class="col">
-                        <label for="participant_email">Enter your email:</label>
+
+                        <h3>New Users</h3>
+                        <h4><strong>Sign Up</strong></h4>
+                        <h5>Enter your email:</h5>
                         <input type="text" class="form-control form-control-lg" id="participant_email" placeholder="e.g. emma.swarney@example.com"></input>
                         <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addAddress()">Sign Up</button>
                     </div>
-                </div>                   
-                <h2>Existing Users</h2>                     
+                </div> 
+                <br>                  
+                <h3>Existing User Functions</h3>                     
                 <div class="row form-group">
                     <div class="col">
-                        <div class="row">
-                            <div class="col-4">
-                                Name
-                            </div>
-                            <div class="col-6 p-0">
-                                <div class="btn-group">
-                                    <button class="btn btn-primary btn-lg">Withdraw Money</button>
-                                    <button class="btn btn-primary btn-lg">Check Balance</button>
-                                </div>
+                        <h4><strong>Withdraw Money From Pool</strong></h4>
+
+                        <h5> Enter Email </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. aarusha.thakral@example.com"></input>
+                        <br>
+
+                        <h5>Enter amount desired</h5><input type="number" class="form-control form-control-lg" placeholder="e.g. 200"></input>
+                        <button class="btn btn-primary btn-lg my-3">Withdraw Money</button>
+                        <br>
+                        <br>
+                    
+
+                        <h4><strong>Check User Balance</strong></h4>
+
+                             <h5> Enter Email </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. emma.swarney@example.com"></input>
+                             <button class="btn btn-primary btn-lg my-3">Check Balance</button>
+
+
+                                
+        
+                                    
+                                
                             </div>                                                
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="col h-100" style="border: 1px solid black">
-                <div class="row mt-5 p-2">
-                    <div class="alert" id="status">Status: </div>
-                </div>
-                <div class="row">
-                    <div class="alert" id="account_hashes"></div>
-                </div>
-                
-                <h3><strong>Sign up</strong></h3>
-                <div class="row">
-                    <label for="participant_email" class="col-4 col-form-label">Enter your email</label>
-                    <input type="text" class="col-8 form-control" id="participant_email" placeholder="e.g. john.smith@example.com"></input>
-                    <button class="btn btn-primary btn-lg btn-block my-3" id="add_participants" onclick="addAddress()">Sign up</button>
+               
 
-                    <label for="amount" class="col-4 col-form-label">Collect Funds</label>
-                    <button class="btn btn-primary btn-lg btn-block my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
-               </div>
+
+    
+            
+            <div class="col">
+                <h2 class = text-center>Admin Functions<br></h2>
+                    <div class="row form-group">
+                     <div class="col"> 
+                        <br><br><br>
+               
+
+                    <h4><strong>Set Ticket Price</strong></h3>
+                    
+                        <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
+                        <br>
+                        <button class="btn btn-primary btn-lg btn-block my-3">Set Price</button>
+                        <br>
+                        <br>
+
+                    <h4><strong>Collect Funds</strong></h3>
+
+                        <h5>Click when ready to collect funds for lottery draw</h5>
+                        <button class="btn btn-primary btn-lg btn-block my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
+                        <br>
+                        <br>
+
+                    <h4><strong>Distribute Winnings</strong></h3>
+
+                        <h5>Click when ready to distribute lottery winnings</h5>
+                        <button class="btn btn-primary btn-lg btn-block my-3">Distribute Winnings</button>    
+               
            </div>
         </div>
     </div>
+
 </body>
 <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
