@@ -152,6 +152,7 @@ window.printAccounts = function() {
 
 // Add participant's address to contract
 window.addMember = function() {
+    //console.log("is this working?"); 
     var email = $("#participant_email").val();
     member_emails.push(email);
     
@@ -161,9 +162,11 @@ window.addMember = function() {
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.addMember(address.toString(), email,{from:admin_account});
+        console.log("this is meta" + meta); 
+        return meta.addMember(address.toString(), email,{from:admin_account, gas:300000});
     }).then(function (result) {
         console.log(result.valueOf());
+        //setStatus(email + 's account was added')
         getParticipantCount();
     }).catch(function(e) {
         console.log(e);
@@ -179,7 +182,7 @@ window.getParticipantCount = function () {
         meta = instance;
         return meta.getParticipantCount.call();
     }).then(function (result) {
-        console.log(result.valueOf());
+        console.log(result.valueOf() + " participants");
     }).catch(function (err) {
         console.log(err);
         setStatus("Could not call getParticipantCount properly.");
@@ -192,9 +195,9 @@ window.collectFunds = function() {
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
         return meta.collectFunds.call();
+    }).then(function (result) {
+        console.log(result.valueOf()); 
     }); 
-
-    console.log("we just collected funds!");
 }
 
 

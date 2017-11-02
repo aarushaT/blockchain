@@ -66,22 +66,32 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function collectFunds(address participant) only_admin {
-        //require((participant != admin) && (accounts[participant].balance >= ticket_amount));
-        accounts[participant].balance -= ticket_amount;
-        accounts[admin].balance += ticket_amount;
-        CollectedFunds(participant);
-    }
+    function collectFunds() only_admin returns(bool){
+
+    if (members.length>0){        
+        for(uint i=0; i<members.length; i++){
+            address participant = members[i]; 
+            require((participant != admin) && (accounts[participant].balance >= ticket_amount));
+            accounts[participant].balance -= ticket_amount;
+            accounts[admin].balance += ticket_amount;
+            CollectedFunds(participant);
+        }
+        lottery_end=true; 
+        }
+
+        return lottery_end;
+    }   
 
     function addMember(address member_address, string member_name) returns(bool) {
-        if (isUnique(member_address)) {
+        if (members.length<9) {
             members.push(member_address);
             accounts[member_address].balance = initialAccountBalance;
             accounts[member_address].name = member_name;
             accounts[member_address].exists = true;
             return true;
         }
-        return false;
+        
+        else {return false; }
     }
 
     function isUnique(address addr) internal returns(bool) {

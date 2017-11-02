@@ -61,7 +61,7 @@
                         <h4><strong>Sign Up</strong></h4>
                         <h5>Enter your email:</h5>
                         <input type="text" class="form-control form-control-lg" id="participant_email" placeholder="e.g. emma.swarney@example.com"></input>
-                        <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addAddress()">Sign Up</button>
+                        <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addMember()">Sign Up</button>
                     </div>
                 </div> 
                 <br>                  
@@ -115,7 +115,7 @@
                     <h4><strong>Collect Funds</strong></h3>
 
                         <h5>Click when ready to collect funds for lottery draw</h5>
-                        <button class="btn btn-primary btn-lg btn-block my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
+                        <button class="btn btn-primary btn-lg btn-block my-3" id="collect_funds" onclick="collectFunds()">Collect Funds!</button>
                         <br>
                         <br>
 
@@ -127,6 +127,11 @@
            </div>
         </div>
     </div>
+
+
+
+    <h5>Get number participants</h5>
+        <button class="btn btn-primary btn-lg btn-block my-3" id="get_participants">How many participants</button> 
 
 </body>
 <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
