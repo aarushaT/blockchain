@@ -71,4 +71,8 @@ contract MetaCoin {
         PublicAccounts.push(member_address);
         return PublicAccounts.length;
     }
+
+    function getParticipantCount() returns(uint) {
+        return PublicAccounts.length;
+    }
 }

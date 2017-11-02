@@ -17,7 +17,6 @@ var MetaCoin = contract(metacoin_artifacts);
 var accounts;
 var admin_account;
 
-var num_signed_up = 0;
 // Hard-coded member names. The first member owns contracts by default (hence Admin).
 var member_emails = [];
 // Associative array to link names to account hashes
@@ -164,12 +163,24 @@ window.addAddress = function() {
         return meta.addAddress(address.toString(), {from:admin_account});
     }).then(function (result) {
         console.log(result.valueOf());
+        getParticipantCount();
     }).catch(function(e) {
         console.log(e);
         setStatus("Could not call addAddress properly.");
     });
+}
 
-    //console.log("there are " + number_participants + " participants in the pool");
+window.getParticipantCount = function () {
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.getParticipantCount.call();
+    }).then(function (result) {
+        console.log(result.valueOf());
+    }).catch(function (err) {
+        console.log(err);
+        setStatus("Could not call getParticipantCount properly.");
+    });
 }
 
 window.collectFunds = function() {
