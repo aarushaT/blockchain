@@ -150,7 +150,7 @@ window.printAccounts = function() {
 }
 
 // Add participant's address to contract
-window.addAddress = function() {
+window.addMember = function() {
     var email = $("#participant_email").val();
     member_emails.push(email);
     
@@ -160,7 +160,7 @@ window.addAddress = function() {
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.addAddress(address.toString(), {from:admin_account});
+        return meta.addMember(address.toString(), {from:admin_account});
     }).then(function (result) {
         console.log(result.valueOf());
         getParticipantCount();

@@ -10,7 +10,9 @@ import "./ConvertLib.sol";
 contract MetaCoin {
     
     struct Account {
+        string name;
         uint balance;
+        bool exists;
     }
     
     address public admin;
@@ -18,8 +20,9 @@ contract MetaCoin {
 
     mapping (address => Account) accounts;
     uint public ticket_amount = 200; //meta
+    uint initialAccountBalance;
 
-    address[] PublicAccounts;
+    address[] members;
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from);
@@ -33,6 +36,9 @@ contract MetaCoin {
     function MetaCoin() {
         admin = tx.origin;
         accounts[admin].balance = 10000;
+        initialAccountBalance = 1000;
+        accounts[admin].name = "Administrator";
+        accounts[Admin].exists = true;
     }
 
     function sendCoin(address receiver, uint amount) returns(bool sufficient) {
@@ -60,19 +66,30 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function collectFunds(address participant) {
-        require((participant != admin) && (accounts[participant].balance >= ticket_amount));
+    function collectFunds(address participant) only_admin {
+        //require((participant != admin) && (accounts[participant].balance >= ticket_amount));
         accounts[participant].balance -= ticket_amount;
         accounts[admin].balance += ticket_amount;
         CollectedFunds(participant);
     }
 
-    function addAddress(address member_address) returns(uint) {
-        PublicAccounts.push(member_address);
-        return PublicAccounts.length;
+    function addMember(address member_address, string member_name) {
+        if (isUnique(member_address)) {
+            members.push(member_address);
+            accounts[member_address].balance = initialAccountBalance;
+            accounts[member_address].name = member_name;
+            accounts[member_address].exists = true;
+        }
+    }
+
+    function isUnique(address addr) returns(bool) {
+        if (accounts[addr].name != "") {
+            return false;
+        }
+        return true;
     }
 
     function getParticipantCount() returns(uint) {
-        return PublicAccounts.length;
+        return members.length;
     }
 }
