@@ -14,7 +14,7 @@ var MetaCoin = contract(metacoin_artifacts);
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
 // For application bootstrapping, check out window.addEventListener below.
-var accounts;
+var accounts = [];
 var admin_account;
 
 var num_signed_up = 0;
@@ -47,7 +47,6 @@ window.signUp = function() {
 
 window.createMemberDropdowns = function(member_list) {
     var $option;
-
     for(var i=0; i < member_list.length; i++) {
         $option = $("<option>", { "value": account_hashes[member_list[i]].toString() }).text(member_list[i]);
         $(".member_select").append($option);
@@ -191,21 +190,63 @@ window.getParticipantCount = function () {
     });
 }
 
+// window.collectFunds = function() {
+    
+//     var foo = 10;
+  
+//  console.log("did it get to here? ");
+//  //console.log("participant count is: " + participant_count);
+//      for (var i=1; i<accounts.length; i++){
+    
+//         var address= accounts[i]; 
+//         //var address = accounts[2];
+//         var meta = 0;
+//         var instance =0; 
+
+//         console.log("address is " + address); 
+
+//     MetaCoin.deployed().then(function(instance) {
+//         meta = instance;
+//         return meta.collectFunds(address.toString(), {from:admin_account, gas: 300000});
+//     }).then(function (result) {
+//         console.log("we just collected funds!");
+//     }).catch(function (err) {
+//         console.log(err); 
+//     }); 
+
+//     //}
+
+// }
+
+
+// window.collectFunds = function () {
+//     var meta; 
+//     MetaCoin.deployed().then(function(instance) {
+//         meta = instance;
+//         return meta.collectFunds();
+//     }).then(function (result) {
+//         console.log(result.valueOf());
+//     }).catch(function (err) {
+//         console.log(err);
+//         setStatus("Could not call getParticipantCount properly.");
+//     });
+// }
+
 window.collectFunds = function() {
     var meta;
+    var tx_hash;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.collectFunds(accounts[0]);
-    }).then(function (result) {
-        console.log(result.valueOf());
-        console.log("did that return an address?");
-        console.log("we just collected funds!");
-    }).catch(function (err) {
-        console.log(err); 
-    }); 
-
+        tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
+        return tx_hash;
+    }).then(function(result) {
+        console.log(result);
+        setStatus("Funds collected")
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Collect funds failed");
+    });    
 }
-
 
 
 $(document).ready(function() {

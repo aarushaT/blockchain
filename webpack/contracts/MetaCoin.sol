@@ -17,10 +17,14 @@ contract MetaCoin {
     
     address public admin;
     bool public lottery_end;
+    bool public lottery_won; 
 
     mapping (address => Account) accounts;
     uint public ticket_amount = 200; //meta
+    uint public winnings = 300; 
     uint initialAccountBalance;
+
+    uint lottery_var = 0; 
 
     address[] members;
 
@@ -66,20 +70,6 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function collectFunds(address [] members) returns(bool){
-     if (members.length>0){        
-         for(uint i=1; i<members.length; i++){
-             address participant = members[i]; 
-             require((participant != admin) && (accounts[participant].balance >= ticket_amount));
-             accounts[participant].balance -= ticket_amount;
-             accounts[admin].balance += ticket_amount;
-             CollectedFunds(participant);
-         }
-         lottery_end=true; 
-         }
-
-        return lottery_end;
-    }   
 
     function addMember(address member_address, string member_name) returns(bool) {
         if (members.length<9) {
@@ -91,6 +81,42 @@ contract MetaCoin {
         }
         
         else {return false; }
+    }
+
+    function collectFunds() only_admin returns(bool) {
+        if (members.length > 0) {
+            for(uint i = 0; i < members.length; i++) {
+                accounts[members[i]].balance -= ticket_amount;
+                CollectedFunds(members[i]);
+            }
+            lottery_won=winLottery(); 
+        }
+        return false;     
+    }
+
+     function distributeFunds() only_admin returns(bool) {
+        if (members.length > 0) {
+            for(uint i = 0; i < members.length; i++) {
+                accounts[members[i]].balance += winnings;
+            }
+            return false;
+        }
+        return true;    
+    }
+
+    function winLottery () returns (bool) {
+        if (lottery_var>0){
+            lottery_won = true; 
+            distributeFunds(); 
+            lottery_var++; 
+        }
+
+        else {
+            lottery_won=false; 
+            lottery_var++; 
+        }
+
+
     }
 
     function isUnique(address addr) internal returns(bool) {
