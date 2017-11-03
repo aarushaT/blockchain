@@ -67,24 +67,26 @@ window.refreshAdminBalance = function() {
         var balance_element = document.getElementById("balance");
         balance_element.innerHTML = value.valueOf();
     }).catch(function(e) {
-        console.log(e);
-        setStatus("Error getting balance; see log.");
+        console.log(e)
+        console.log("error getting balance; see log.");
     });
 }
 
-window.showBalance = function() {
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        return meta.getBalance.call(admin_account, { from: admin_account });
-    }).then(function(value) {
-        var balance_element = document.getElementById("balance_span");
-        balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
-    }).catch(function(e) {
-        console.log(e);
-        setStatus("Error getting balance; see log.");
-    });
-}
+// window.showBalance = function() {
+//     var member = document.getElementById("check_balance"); 
+//     member = member.balance; 
+//     var meta;
+//     MetaCoin.deployed().then(function(instance) {
+//         meta = instance;
+//         return meta.getBalance.call(member, {gas: 300000});
+//     }).then(function(value) {
+//         var balance_element = document.getElementById("balance_span");
+//         balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
+//     }).catch(function(e) {
+//         console.log(e);
+//         setStatus("Error getting balance; see log.");
+//     });
+// }
 
 window.sendCoin = function() {
     var amount = parseInt(document.getElementById("amount").value);
@@ -111,17 +113,19 @@ window.sendCoin = function() {
 }
 
 window.getBalance = function() {
-    var member = document.getElementById("id_member").value;
-
-    var balance_element = document.getElementById("balance_span");
+    var email = document.getElementById("get_balance").value;
+    console.log("email is " + email); 
+    //var balance_element = document.getElementById("balance_span");
+    var address = account_hashes[email]; 
+    console.log("This is the address " + address); 
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.getBalance.call(member, { from: member });
+        return meta.getBalance.call(address.toString(), { from: address });
     }).then(function(value) {
-        balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
+        balance_element.innerHTML = "Balance = " + value.valueOf() + " Ether";
     }).catch(function(e) {
-        balance_element.innerHTML = e;
+        //balance_element.innerHTML = e;
         setStatus("Error retrieving balance; see log.");
     });
 }
@@ -152,26 +156,26 @@ window.printAccounts = function() {
     }
 }
 
-// Add participant's address to contract
 window.addMember = function() {
     var email = $("#participant_email").val();
     member_emails.push(email);
     
     var address = accounts[++num_participants];
     account_hashes[email] = address;
+    console.log("This is the public hash: " + address);
     
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.addMember(address.toString(), {from:admin_account});
+        return meta.addMember(address.toString(), email, {from:admin_account, gas: 300000});
     }).then(function (result) {
         console.log(result.valueOf());
+        getParticipantCount(); 
+        
     }).catch(function(e) {
         console.log(e);
         setStatus("Could not call addAddress properly.");
     });
-
-    //console.log("there are " + number_participants + " participants in the pool");
 }
 
 window.getParticipantCount = function () {
@@ -191,10 +195,15 @@ window.collectFunds = function() {
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.collectFunds.call();
+        return meta.collectFunds(accounts[0]);
+    }).then(function (result) {
+        console.log(result.valueOf());
+        console.log("did that return an address?");
+        console.log("we just collected funds!");
+    }).catch(function (err) {
+        console.log(err); 
     }); 
 
-    console.log("we just collected funds!");
 }
 
 
@@ -227,15 +236,14 @@ $(document).ready(function() {
 
         accounts = accs;
         admin_account = accounts[0];
-        // Assign account hashes to member names
+        //console.log ("this is the admin account: " + admin_account);
+        //Assign account hashes to member names
         // for (var i = 0; i < member_names.length; i++) {
         //     account_hashes[member_names[i]] = accounts[i];
         // }
 
         // refreshAdminBalance();
         // updateParticipants();
-
-
     });
         
     num_participants = 0;

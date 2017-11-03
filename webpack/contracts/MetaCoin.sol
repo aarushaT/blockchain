@@ -50,7 +50,7 @@ contract MetaCoin {
     }
 
     function getBalanceInEth(address addr) returns(uint) {
-        return ConvertLib.convert(getBalance(addr), 2);
+        return 2;//ConvertLib.convert(getBalance(addr), 2);
     }
 
     function getBalance(address addr) returns(uint) {
@@ -66,18 +66,17 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function collectFunds() only_admin returns(bool){
-
-    if (members.length>0){        
-        for(uint i=0; i<members.length; i++){
-            address participant = members[i]; 
-            require((participant != admin) && (accounts[participant].balance >= ticket_amount));
-            accounts[participant].balance -= ticket_amount;
-            accounts[admin].balance += ticket_amount;
-            CollectedFunds(participant);
-        }
-        lottery_end=true; 
-        }
+    function collectFunds(address [] members) returns(bool){
+     if (members.length>0){        
+         for(uint i=1; i<members.length; i++){
+             address participant = members[i]; 
+             require((participant != admin) && (accounts[participant].balance >= ticket_amount));
+             accounts[participant].balance -= ticket_amount;
+             accounts[admin].balance += ticket_amount;
+             CollectedFunds(participant);
+         }
+         lottery_end=true; 
+         }
 
         return lottery_end;
     }   
