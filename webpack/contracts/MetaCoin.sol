@@ -89,7 +89,7 @@ contract MetaCoin {
                 accounts[members[i]].balance -= ticket_amount;
                 CollectedFunds(members[i]);
             }
-            lottery_won=winLottery(); 
+            return true; 
         }
         return false;     
     }

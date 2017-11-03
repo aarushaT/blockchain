@@ -248,6 +248,22 @@ window.collectFunds = function() {
     });    
 }
 
+window.distributeFunds = function() {
+    var meta;
+    var tx_hash;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        tx_hash = meta.distributeFunds({from: admin_account, gas: 200000});
+        return tx_hash;
+    }).then(function(result) {
+        console.log(result);
+        setStatus("Funds collected")
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Collect funds failed");
+    });    
+}
+
 
 $(document).ready(function() {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
