@@ -4,7 +4,7 @@
 <head>
     <title>MetaCoin - Truffle Webpack Demo w/ Frontend</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="blockchain/app/stylesheets/font-awesome.min.css">
 </head>
 
@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="col text-center">
-                <div class="alert alert-info">We currently have&nbsp;<span id="num_participants_span"></span>participants</div>
+                <div class="alert alert-info">We currently have&nbsp;<span id="num_members_span"></span>members</div>
             </div>
         </div>
 
@@ -49,7 +49,6 @@
                 </div>
             </div>
         </div>
-
             
         <div class="row p-5">
             <div class="col">
@@ -59,7 +58,7 @@
                         <h3>New Users</h3>
                         <h4><strong>Sign Up</strong></h4>
                         <h5>Enter your email:</h5>
-                        <input type="text" class="form-control form-control-lg" id="participant_email" placeholder="e.g. emma.swarney@example.com"></input>
+                        <input type="text" class="form-control form-control-lg" id="member_email" placeholder="e.g. emma.swarney@example.com"></input>
                         <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addMember()">Sign Up</button>
                     </div>
                 </div> 
@@ -76,33 +75,20 @@
                         <button class="btn btn-primary btn-lg my-3">Withdraw Money</button>
                         <br>
                         <br>
-                    
 
                         <h4><strong>Check User Balance</strong></h4>
-
-                             <h5> Enter Email </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. emma.swarney@example.com"></input>
-                             <button class="btn btn-primary btn-lg my-3">Check Balance</button>
-
-
-                                
-        
-                                    
-                                
-                            </div>                                                
-                        </div>
-                    </div>
-               
-
-
+                        <h5> Enter Email </h5>
+                        <input type="text" class="form-control form-control-lg" placeholder="e.g. emma.swarney@example.com"></input>
+                        <button class="btn btn-primary btn-lg my-3">Check Balance</button>
+                    </div>                                                
+                </div>
+            </div>
     
-            
             <div class="col">
                 <h2 class = text-center>Admin Functions<br></h2>
-                    <div class="row form-group">
-                     <div class="col"> 
+                <div class="row form-group">
+                    <div class="col"> 
                         <br><br>
-               
-
                         <h4><strong>Set Ticket Price</strong></h4>
                         
                             <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
@@ -119,19 +105,46 @@
                             <br>
 
                         <h4><strong>Distribute Winnings</strong></h4>
+                        <h5>Click when ready to distribute lottery winnings</h5>
+                        <button class="btn btn-primary btn-lg btn-block my-3">Distribute Winnings</button>
 
-                            <h5>Click when ready to distribute lottery winnings</h5>
-                            <button class="btn btn-primary btn-lg btn-block my-3">Distribute Winnings</button> 
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <div id="accordion" role="tablist">
+                        <div class="card">
+                            <div class="card-header text-center" role="tab" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    View Members
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    <table class="table member-table table-striped">
+                                        <thead class="thead-light ">
+                                            <tr>
+                                                <th>Email</th>
+                                                <th>Balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="member-table-body">
+                                        </tbody>
+                                    </table>                         
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script src="./app.js"></script>
 
 </html>

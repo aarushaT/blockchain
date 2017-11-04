@@ -10,7 +10,7 @@ import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 var MetaCoin = contract(metacoin_artifacts);
-
+var BigNumber = require('bignumber.js')
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
 // For application bootstrapping, check out window.addEventListener below.
@@ -23,32 +23,21 @@ var member_emails = [];
 // Associative array to link names to account hashes
 var account_hashes = {};
 
-var num_participants;
+var num_members;
 
-window.updateParticipants = function() {
-    $("#num_participants_span").text(member_names.length);
+window.updatemembers = function() {
+    $("#num_members_span").text(member_names.length);
 }
 
 window.signUp = function() {
     var $name = $("#signee_name").val().toUpperCase();
-    if ($name != "") {
-        member_names.push($name);
-        account_hashes[$name] = accounts[num_signed_up++];
-        setStatus(member_names[num_signed_up - 1] + " has signed up for lottery");
-        updateParticipants();
+    if ($name) {
+        
+        // setStatus(member_names[num_signed_up - 1] + " has signed up for lottery");
+        // updatemembers();
     }
     else {
-        setStatus("Please enter a name");
-    }
-}
-
-
-window.createMemberDropdowns = function(member_list) {
-    var $option;
-
-    for(var i=0; i < member_list.length; i++) {
-        $option = $("<option>", { "value": account_hashes[member_list[i]].toString() }).text(member_list[i]);
-        $(".member_select").append($option);
+        setStatus("Please enter an email");
     }
 }
 
@@ -152,36 +141,43 @@ window.printAccounts = function() {
 
 // Add participant's address to contract
 window.addMember = function() {
-    var email = $("#participant_email").val();
-    member_emails.push(email);
-    
-    var address = accounts[++num_participants];
-    account_hashes[email] = address;
-    
-    var meta;
-    var tx_hash;
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        tx_hash = meta.addMember(address.toString(), email, {from:admin_account, gas: 150000});
-        console.log("Transaction Hash = " + tx_hash);
-    }).catch(function(e) {
-        console.log(e);
-        setStatus("Could not call addMember properly.");
-    });
+    var $email = $("#member_email").val();
+    var count_promise = getMemberCount();
+    var contract_promise = MetaCoin.deployed();
+    var new_address;
+
+    if ($email != "") {
+        Promise.all([count_promise, contract_promise]).then(function (results) {
+            var num_members = results[0];
+            var contract_instance = results[1];
+            if (num_members < (accounts.length-1)) {
+                new_address = accounts[num_members+1];  
+                var transaction = contract_instance.addMember(new_address, $email, {from: admin_account, gas: 200000});
+                updateMemberTable(new_address);
+            }
+            else {
+                setStatus("Reached member limit!");
+                console.log("Not enough accounts!");
+            }
+            }).catch(function(err) {
+                console.log("Sign up failed");
+                console.log(err);
+            });
+    }
+    else {
+        setStatus("Please enter a valid email");
+    }
 }
 
-
-
-window.getParticipantCount = function () {
+window.getMemberCount = function () {
     var meta;
-    MetaCoin.deployed().then(function(instance) {
+    var member_count;
+    return MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.getParticipantCount.call();
-    }).then(function (result) {
-        console.log(result.valueOf());
+        return meta.getMemberCount.call();
     }).catch(function (err) {
         console.log(err);
-        setStatus("Could not call getParticipantCount properly.");
+        setStatus("Could not call getMemberCount properly.");
     });
 }
 
@@ -191,20 +187,88 @@ window.collectFunds = function() {
     var tx_hash;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.collectFunds.call();
+        tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
+        return tx_hash;
     }).then(function(result) {
         console.log(result);
-        if (result.valueOf() == true) {
-            tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
-            console.log(tx_hash);
-        }
-        else {
-            console.log("Failed to collect")
-        }
+        setStatus("Funds collected")
     }).catch(function(err) {
         console.log(err);
         setStatus("Collect funds failed");
     });    
+}
+
+window.setMemberTable = async function() {
+    var meta, account_name, account_balance;
+
+    var contract_promise = MetaCoin.deployed();
+    var count_promise = getMemberCount().catch(function(err) {
+        cosole.log("Could not retrieve member count");
+        console.log(err);
+    });
+    var addresses_promise = MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.getMemberAddresses.call();
+    }).catch(function (err) {
+        console.log("Could not get addresses");
+        console.log(err);
+    });
+
+    Promise.all([count_promise, addresses_promise, contract_promise]).then(async function(results) {
+        var member_count = results[0];
+        var member_addresses = results[1];
+        var contract_instance = results[2];        
+
+        var $num_rows = $(".member-table-body").children("tr").length;
+                
+        var start_index = ($num_rows == 0) ? 0 : ($num_rows - 1);
+        var new_member_count = member_count - $num_rows;
+
+        for(var i=start_index; i < new_member_count; i++) {
+            var $new_row = $("<tr>");
+
+            await contract_instance.getAccount.call(member_addresses[i]).then(function(account) {
+                account_name = account[0];
+                account_balance = account[1].toNumber();
+                var $name = $("<td>").text(account_name);
+                var $balance = $("<td>").text(account_balance);
+                $new_row = $new_row.append($name);
+                $new_row = $new_row.append($balance);
+                $(".member-table-body").append($new_row);
+            }).catch(function(err) {
+                console.log("Couldn't get account");
+                console.log(err);
+            });
+        }
+    });
+}
+
+window.updateMemberTable = function(address) {
+    var meta;
+
+    if (address) {
+        MetaCoin.deployed().then(function(instance) {
+            meta = instance;
+            return meta.getAccount.call(address);
+        }).then(function(account) {
+            var account_name = account[0];
+            var account_balance = account[1].toNumber();
+            
+            var $new_row = $("<tr>");
+            var $name = $("<td>").text(account_name);
+            var $balance = $("<td>").text(account_balance);
+            $new_row = $new_row.append($name);
+            $new_row = $new_row.append($balance);
+            $(".member-table-body").append($new_row);
+        }).catch(function(err) {
+            console.log("Could not update member table");
+            console.log(err);
+        });
+    }
+    else {
+        console.log("Not enough accounts!");
+        setStatus("Reached member limit");
+    }
 }
 
 
@@ -237,16 +301,7 @@ $(document).ready(function() {
 
         accounts = accs;
         admin_account = accounts[0];
-        // Assign account hashes to member names
-        // for (var i = 0; i < member_names.length; i++) {
-        //     account_hashes[member_names[i]] = accounts[i];
-        // }
 
-        // refreshAdminBalance();
-        // updateParticipants();
-
-
+        setMemberTable();
     });
-        
-    num_participants = 0;
-});
+})

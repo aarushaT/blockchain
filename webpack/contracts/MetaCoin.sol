@@ -18,12 +18,12 @@ contract MetaCoin {
     address public admin;
     bool public lottery_end;
 
-    mapping (address => Account) accounts;
+    mapping (address => Account) public accounts;
     uint max_members;
     uint public ticket_amount = 200; //meta
     uint initialAccountBalance;
 
-    address[] members;
+    address[] public members;
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from);
@@ -90,14 +90,15 @@ contract MetaCoin {
         return false;
     }
 
-    // function isUnique(address addr) internal returns(bool) {
-    //     if (!accounts[addr].exists) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    function getParticipantCount() returns(uint) {
+    function getMemberCount() returns(uint) {
         return members.length;
+    }
+
+    function getMemberAddresses() returns(address[]) {
+        return members;
+    }
+
+    function getAccount(address member_address) only_admin returns(string, uint) {
+        return (accounts[member_address].name, accounts[member_address].balance);
     }
 }
