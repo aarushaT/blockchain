@@ -157,7 +157,7 @@ window.addMember = function() {
             }
             else {
                 setStatus("Reached member limit!");
-                console.log("Not enough accounts!");
+                console.log("Too many accounts!");
             }
             }).catch(function(err) {
                 console.log("Sign up failed");
@@ -266,7 +266,7 @@ window.updateMemberTable = function(address) {
         });
     }
     else {
-        console.log("Not enough accounts!");
+        console.log("Too many accounts!");
         setStatus("Reached member limit");
     }
 }
