@@ -25,8 +25,14 @@ var account_hashes = {};
 
 var num_members;
 
-window.updatemembers = function() {
-    $("#num_members_span").text(member_names.length);
+window.updateMembers = function() {
+    getMemberCount().then(function(result) {
+        $("#num_members_span").text(result.toNumber());
+    }).catch(function(err) {
+        cosole.log("Could not retrieve member count");
+        console.log(err);
+    });
+    
 }
 
 window.signUp = function() {
@@ -151,6 +157,7 @@ window.addMember = function() {
                 console.log(num_members);  
                 var transaction = contract_instance.addMember(new_address, $member_email, {from: admin_account, gas: 200000});
                 updateMemberTable(new_address);
+                updateMembers();
             }
             else {
                 setStatus("Reached member limit!");
@@ -268,8 +275,6 @@ window.updateMemberTable = function(address) {
     }
 }
 
-
-
 $(document).ready(function() {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof web3 !== 'undefined') {
@@ -298,7 +303,8 @@ $(document).ready(function() {
 
         accounts = accs;
         admin_account = accounts[0];
-
+    
+        updateMembers();
         setMemberTable();
     });
 })

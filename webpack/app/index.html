@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="col text-center">
-                <div class="alert alert-info">We currently have&nbsp;<span id="num_members_span"></span>members</div>
+                <div class="alert alert-info">We currently have&nbsp;<span id="num_members_span"></span>&nbsp;members</div>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
                 </div>
 
                 <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="card-block small-text">
+                    <div class="card-block small-text p-3">
                         <h4><strong>Welcome to the Empire Life Blockchain Lottery Application!</strong></h4>
                         Here are the rules: 
                         <ol>
@@ -52,17 +52,17 @@
             
         <div class="row p-5">
             <div class="col">
-                <h2 class = text-center>Member Functions<br></h2>
-                <div class="row form-group">
-                    <div class="col">
-                        <h4><strong>Sign Up Here!</strong></h4>
+                <h3 class = text-center>Member Functions<br></h3>
+                <h3><strong>Sign Up Here!</strong></h3>
+                <div class="row form-group pl-3" id="sign-up-div">
+                    <div class="col">                        
                         <h5>Enter your email:</h5>
                         <input type="text" class="form-control form-control-lg" id="member_email" placeholder="e.g. emma.swarney@example.com"></input>
                         <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addMember()">Sign Up</button>
                     </div>
                 </div>                  
-                <h3>Existing Member Functions</h3>                   
-                <div class="row form-group">
+                <h3><strong>Existing Members</strong></h3>                   
+                <div class="row form-group pl-3">
                     <div class="col">
                         <h4><strong>Withdraw Money From Pool</strong></h4>
 
@@ -71,7 +71,10 @@
                         <h5 class="my-2">Enter amount desired</h5><input type="number" class="form-control form-control-lg" placeholder="e.g. 200"></input>
                         <button class="btn btn-primary btn-lg my-3">Withdraw Money</button>
                         <br/>
-
+                    </div>
+                </div>
+                <div class="row form-group pl-3">
+                    <div class="col">
                         <h4><strong>Check Member Balance</strong></h4>
                         <h5> Enter Email </h5>
                         <input type="text" class="form-control form-control-lg" placeholder="e.g. emma.swarney@example.com"></input>
@@ -81,20 +84,21 @@
             </div>
     
             <div class="col">
-                <h2 class = text-center>Admin Functions<br></h2>
+                <h3 class = text-center>Admin Functions<br></h3>
                 <div class="row form-group">
                     <div class="col"> 
-                        <h4><strong>Set Ticket Price</strong></h4>
-                        
-                            <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
-                            <button class="btn btn-primary btn-lg my-3">Set Price</button>
-                            <br>
-
+                        <h4><strong>Set Ticket Price</strong></h4>                        
+                        <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
+                        <button class="btn btn-primary btn-lg my-3">Set Price</button>
+                        <br>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col">
                         <h4><strong>Collect Funds</strong></h4>
-
-                            <h5>Click when ready to collect funds for lottery draw</h5>
-                            <button class="btn btn-primary btn-lg my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
-                            <br>
+                        <h5>Click when ready to collect funds for lottery draw</h5>
+                        <button class="btn btn-primary btn-lg my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
+                        <br>
 
                         <h4><strong>Distribute Winnings</strong></h4>
                         <h5>Click when ready to distribute lottery winnings</h5>
