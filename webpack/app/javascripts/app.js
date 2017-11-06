@@ -41,6 +41,13 @@ window.signUp = function() {
     }
 }
 
+window.isValidEmail = function ($email) {
+  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+  return emailReg.test( $email );
+}
+
+
+
 window.setStatus = function(message) {
     $("#status").text("Status: " + message);
 }
@@ -128,36 +135,26 @@ window.freeMoney = function() {
     });
 }
 
-window.printAccounts = function() {
-    try {
-        for (var key in account_hashes) {
-            $("#account_hashes").append(key + ": " + account_hashes[key] + "<br/>");
-        }
-    }
-    catch(err) {
-        $("#account_hashes_status").text(err.message);
-    }
-}
-
 // Add participant's address to contract
 window.addMember = function() {
-    var $email = $("#member_email").val();
+    var $member_email = $("#member_email").val();
     var count_promise = getMemberCount();
     var contract_promise = MetaCoin.deployed();
     var new_address;
 
-    if ($email != "") {
+    if (isValidEmail($member_email)) {
         Promise.all([count_promise, contract_promise]).then(function (results) {
-            var num_members = results[0];
+            var num_members = results[0].toNumber();
             var contract_instance = results[1];
             if (num_members < (accounts.length-1)) {
-                new_address = accounts[num_members+1];  
-                var transaction = contract_instance.addMember(new_address, $email, {from: admin_account, gas: 200000});
+                new_address = accounts[num_members+1];
+                console.log(num_members);  
+                var transaction = contract_instance.addMember(new_address, $member_email, {from: admin_account, gas: 200000});
                 updateMemberTable(new_address);
             }
             else {
                 setStatus("Reached member limit!");
-                console.log("Too many accounts!");
+                console.log("Could not add: too many accounts!");
             }
             }).catch(function(err) {
                 console.log("Sign up failed");
@@ -165,6 +162,7 @@ window.addMember = function() {
             });
     }
     else {
+        console.log("Sign up failed: invalid email");
         setStatus("Please enter a valid email");
     }
 }
@@ -180,7 +178,6 @@ window.getMemberCount = function () {
         setStatus("Could not call getMemberCount properly.");
     });
 }
-
 
 window.collectFunds = function() {
     var meta;
@@ -215,7 +212,7 @@ window.setMemberTable = async function() {
     });
 
     Promise.all([count_promise, addresses_promise, contract_promise]).then(async function(results) {
-        var member_count = results[0];
+        var member_count = results[0].toNumber();
         var member_addresses = results[1];
         var contract_instance = results[2];        
 
@@ -225,7 +222,7 @@ window.setMemberTable = async function() {
         var new_member_count = member_count - $num_rows;
 
         for(var i=start_index; i < new_member_count; i++) {
-            var $new_row = $("<tr>");
+            var $new_row = $("<tr>", {id: member_addresses[i]});
 
             await contract_instance.getAccount.call(member_addresses[i]).then(function(account) {
                 account_name = account[0];
@@ -254,7 +251,7 @@ window.updateMemberTable = function(address) {
             var account_name = account[0];
             var account_balance = account[1].toNumber();
             
-            var $new_row = $("<tr>");
+            var $new_row = $("<tr>", {id: address});
             var $name = $("<td>").text(account_name);
             var $balance = $("<td>").text(account_balance);
             $new_row = $new_row.append($name);
@@ -266,7 +263,7 @@ window.updateMemberTable = function(address) {
         });
     }
     else {
-        console.log("Too many accounts!");
+        console.log("Could not add: too many accounts or invalid address!");
         setStatus("Reached member limit");
     }
 }

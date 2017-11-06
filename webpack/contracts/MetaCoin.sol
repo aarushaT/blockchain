@@ -79,7 +79,7 @@ contract MetaCoin {
         return false;    
     }
 
-    function addMember(address member_address, string member_name) returns(bool) {
+    function addMember(address member_address, string member_name) only_admin returns(bool) {
         if (members.length < max_members) {
             members.push(member_address);
             accounts[member_address].balance = initialAccountBalance;
@@ -90,11 +90,11 @@ contract MetaCoin {
         return false;
     }
 
-    function getMemberCount() returns(uint) {
+    function getMemberCount() only_admin returns(uint) {
         return members.length;
     }
 
-    function getMemberAddresses() returns(address[]) {
+    function getMemberAddresses() only_admin returns(address[]) {
         return members;
     }
 

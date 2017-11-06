@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>MetaCoin - Truffle Webpack Demo w/ Frontend</title>
+    <title>Empire Life Lottery</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="blockchain/app/stylesheets/font-awesome.min.css">
@@ -40,7 +40,7 @@
                         <ol>
                             <li>Each ticket costs 200 ether (a cryptocurrency) </li>
                             <li>Draws will occur twice a week on Wednesdays and Saturdays</li>
-                            <li>Upon sign up, each user will have 1000 ether deposited<br> 
+                            <li>Upon sign up, each member will have 1000 ether deposited<br> 
                             in their account</li>
 
                         </ol>    
@@ -52,31 +52,27 @@
             
         <div class="row p-5">
             <div class="col">
-                <h2 class = text-center>User Functions<br></h2><br>
+                <h2 class = text-center>Member Functions<br></h2>
                 <div class="row form-group">
                     <div class="col">
-                        <h3>New Users</h3>
-                        <h4><strong>Sign Up</strong></h4>
+                        <h4><strong>Sign Up Here!</strong></h4>
                         <h5>Enter your email:</h5>
                         <input type="text" class="form-control form-control-lg" id="member_email" placeholder="e.g. emma.swarney@example.com"></input>
                         <button class="btn btn-primary btn-lg my-3" id="sign_up_button" onclick="addMember()">Sign Up</button>
                     </div>
-                </div> 
-                <br>                  
-                <h3>Existing User Functions</h3>                     
+                </div>                  
+                <h3>Existing Member Functions</h3>                   
                 <div class="row form-group">
                     <div class="col">
                         <h4><strong>Withdraw Money From Pool</strong></h4>
 
                         <h5> Enter Email </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. aarusha.thakral@example.com"></input>
-                        <br>
 
-                        <h5>Enter amount desired</h5><input type="number" class="form-control form-control-lg" placeholder="e.g. 200"></input>
+                        <h5 class="my-2">Enter amount desired</h5><input type="number" class="form-control form-control-lg" placeholder="e.g. 200"></input>
                         <button class="btn btn-primary btn-lg my-3">Withdraw Money</button>
-                        <br>
-                        <br>
+                        <br/>
 
-                        <h4><strong>Check User Balance</strong></h4>
+                        <h4><strong>Check Member Balance</strong></h4>
                         <h5> Enter Email </h5>
                         <input type="text" class="form-control form-control-lg" placeholder="e.g. emma.swarney@example.com"></input>
                         <button class="btn btn-primary btn-lg my-3">Check Balance</button>
@@ -88,25 +84,21 @@
                 <h2 class = text-center>Admin Functions<br></h2>
                 <div class="row form-group">
                     <div class="col"> 
-                        <br><br>
                         <h4><strong>Set Ticket Price</strong></h4>
                         
                             <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
-                            <br>
-                            <button class="btn btn-primary btn-lg btn-block my-3">Set Price</button>
-                            <br>
+                            <button class="btn btn-primary btn-lg my-3">Set Price</button>
                             <br>
 
                         <h4><strong>Collect Funds</strong></h4>
 
                             <h5>Click when ready to collect funds for lottery draw</h5>
-                            <button class="btn btn-primary btn-lg btn-block my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
-                            <br>
+                            <button class="btn btn-primary btn-lg my-3" id="get_funds" onclick="collectFunds()">Collect Funds!</button>
                             <br>
 
                         <h4><strong>Distribute Winnings</strong></h4>
                         <h5>Click when ready to distribute lottery winnings</h5>
-                        <button class="btn btn-primary btn-lg btn-block my-3">Distribute Winnings</button>
+                        <button class="btn btn-primary btn-lg my-3">Distribute Winnings</button>
 
                     </div>
                 </div>
