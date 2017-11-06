@@ -25,6 +25,9 @@ var account_hashes = {};
 
 var num_participants;
 
+//determines lottery outcome
+var lottery_index = 1; 
+
 window.updateParticipants = function() {
     $("#num_participants_span").text(member_names.length);
     var participants = $("#num_participants_span").text(member_names.length).value;
@@ -257,7 +260,29 @@ window.distributeFunds = function() {
         return tx_hash;
     }).then(function(result) {
         console.log(result);
-        setStatus("Funds collected")
+        setStatus("Funds collected");
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Collect funds failed");
+    });    
+}
+
+window.checkLottery = function() {
+    var meta; 
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.checkLottery(lottery_index, {from: admin_account, gas: 200000}); 
+    }).then(function(result) {
+        console.log(result);
+        if (lottery_index == 1 || lottery_index == 3){
+            setStatus("Sorry, you lost this week's lottery."); 
+        }
+
+        else {
+            setStatus("Congatulations! You won 300 ether"); 
+        }
+
+        lottery_index ++; 
     }).catch(function(err) {
         console.log(err);
         setStatus("Collect funds failed");
@@ -283,7 +308,7 @@ $(document).ready(function() {
     web3.eth.getAccounts(function(err, accs) {
         if (err != null) {
             alert("There was an error fetching your accounts.");
-            return;
+            return; 
         }
 
         if (accs.length == 0) {

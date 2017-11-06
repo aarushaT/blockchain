@@ -5,7 +5,6 @@
     <title>MetaCoin - Truffle Webpack Demo w/ Frontend</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="blockchain/app/stylesheets/font-awesome.min.css">
 </head>
 
 <body>
@@ -28,8 +27,7 @@
     <div class="card-header text-center" role="tab" id="headingOne">
       <h5 class="mb-0">
         <a class="rules-header" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          The Rules <i class="fa fa-info-circle" aria-hidden="true"></i>
-        </a>
+          The Rules </a>
       </h5>
     </div>
 
@@ -101,7 +99,7 @@
                         <br>
                         <br>
 
-                    <h4><strong>Collect Funds</strong></h3>
+                 <!--    <h4><strong>Collect Funds</strong></h3>
 
                         <h5>Click when ready to collect funds for lottery draw</h5>
                         <button class="btn btn-primary btn-lg btn-block my-3" id="collect_funds" onclick="collectFunds()">Collect Funds!</button>
@@ -111,7 +109,12 @@
                     <h4><strong>Distribute Winnings</strong></h4>
 
                         <h5>Click when ready to distribute lottery winnings</h5>
-                        <button class="btn btn-primary btn-lg btn-block my-3" id="dist_winnings" onclick="distributeFunds()">Distribute Winnings</button>    
+                        <button class="btn btn-primary btn-lg btn-block my-3" id="dist_winnings" onclick="distributeFunds()">Distribute Winnings</button>  -->
+
+                    <h4><strong>Start Lottery</strong></h4>
+
+                        <h5>Click when ready to start this week's lottery</h5>
+                        <button class="btn btn-primary btn-lg btn-block my-3" id="lottery_win" onclick="checkLottery()">Check Lottery</button>    
                
            </div>
         </div>
@@ -119,8 +122,8 @@
 
 
 
-    <h5>Get number participants</h5>
-      <button class="btn btn-primary btn-lg btn-block my-3" id="get_participants">How many participants</button> 
+    <!-- <h5>Get number participants</h5>
+      <button class="btn btn-primary btn-lg btn-block my-3" id="get_participants">How many participants</button>  -->
 
 </body>
 <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>

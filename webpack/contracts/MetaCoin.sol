@@ -21,15 +21,14 @@ contract MetaCoin {
 
     mapping (address => Account) accounts;
     uint public ticket_amount = 200; //meta
-    uint public winnings = 300; 
+    uint public winning_amount = 300; //meta
     uint initialAccountBalance;
-
-    uint lottery_var = 0; 
 
     address[] members;
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from);
+    event DistributedFunds(address indexed _from); 
     event LotteryEnded(uint amount_won);
 
     modifier only_admin() {
@@ -70,6 +69,43 @@ contract MetaCoin {
         return ticket_amount;
     }
 
+    // function collectFunds(address [] myarray) returns(bool){
+    //  if (members.length>0){        
+    //      for(uint i=0; i<members.length; i++){
+    //          address participant = members[i]; 
+    //          require((participant != admin) && (accounts[participant].balance >= ticket_amount));
+    //          accounts[participant].balance -= ticket_amount;
+    //          accounts[admin].balance += ticket_amount;
+    //          CollectedFunds(participant);
+    //      }
+    //      lottery_end=true; 
+    //      }
+
+    //     return lottery_end;
+    // }   
+
+
+    function collectFunds() only_admin returns(bool) {
+        if (members.length > 0) {
+            for(uint i = 0; i < members.length; i++) {
+                accounts[members[i]].balance -= ticket_amount;
+                CollectedFunds(members[i]);
+            }
+            return true;
+        }
+        return false;    
+    }
+
+    function distributeFunds() only_admin returns(bool) {
+        if (members.length > 0) {
+            for(uint i = 0; i < members.length; i++) {
+                accounts[members[i]].balance += winning_amount;
+                DistributedFunds(members[i]);
+            }
+            return true;
+        }
+        return false;    
+    }
 
     function addMember(address member_address, string member_name) returns(bool) {
         if (members.length<9) {
@@ -83,41 +119,26 @@ contract MetaCoin {
         else {return false; }
     }
 
-    function collectFunds() only_admin returns(bool) {
-        if (members.length > 0) {
-            for(uint i = 0; i < members.length; i++) {
-                accounts[members[i]].balance -= ticket_amount;
-                CollectedFunds(members[i]);
-            }
-            return true; 
-        }
-        return false;     
-    }
+    function checkLottery(uint lottery_num) only_admin returns(uint) {
 
-     function distributeFunds() only_admin returns(bool) {
-        if (members.length > 0) {
-            for(uint i = 0; i < members.length; i++) {
-                accounts[members[i]].balance += winnings;
-            }
-            return false;
-        }
-        return true;    
-    }
+            collectFunds(); 
 
-    function winLottery () returns (bool) {
-        if (lottery_var>0){
-            lottery_won = true; 
-            distributeFunds(); 
-            lottery_var++; 
+        if (lottery_num == 1|| lottery_num == 3){
+            lottery_won = false; 
+            return lottery_num;    
         }
 
         else {
-            lottery_won=false; 
-            lottery_var++; 
+            lottery_won=true; 
+             distributeFunds(); 
+            return lottery_num; 
+            
+            
         }
-
-
+        lottery_won=false; 
     }
+
+
 
     function isUnique(address addr) internal returns(bool) {
         if (!accounts[addr].exists) {
@@ -128,5 +149,9 @@ contract MetaCoin {
 
     function getParticipantCount() returns(uint) {
         return members.length;
+    }
+
+    function getLotterystate() internal returns(bool) {
+        return lottery_won; 
     }
 }
