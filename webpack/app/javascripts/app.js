@@ -321,9 +321,11 @@ window.getLotteryNumbers = function() {
         if(result == false) {
             console.log("No win");
             generateTicket(5);
+            setStatus("Lottery Lost, collecting tickets for next draw"); 
         }
         else {
             console.log("WON!!!!");
+            setStatus("Lottery Won! Winnings have been automatically added to your account balance"); 
         }
     }).catch(function(err) {
         console.log(err);

@@ -107,8 +107,9 @@ contract MetaCoin {
             distributeFunds(); 
             return true;
         }
+        collectFunds();
         return false;
-        collectFunds(); 
+         
     }
 
     function getWinnings() returns (uint){
