@@ -22,6 +22,8 @@ contract MetaCoin {
     uint max_members;
     uint public ticket_amount = 2; //meta
     uint initialAccountBalance;
+    uint public winnings =20; 
+
 
     address[] public members;
 
@@ -39,8 +41,7 @@ contract MetaCoin {
     function MetaCoin() {
         admin = tx.origin;
         accounts[admin].balance = 0;
-        initialAccountBalance = 20;
-        winnings = 20; 
+        initialAccountBalance = 20; 
         accounts[admin].name = "Administrator";
         max_members = 10;
     }
@@ -92,8 +93,8 @@ contract MetaCoin {
     function distributeFunds (address addr) only_admin {
         require (members.length > 0);
         require(addr != admin);
-        accounts[addr].balance += winnings;
-        accounts[admin].balance -= winnings;
+        accounts[addr].balance += winnings/members.length;
+        accounts[admin].balance -= winnings/members.length;
         DistributedFunds(addr); 
     }
 
@@ -112,7 +113,7 @@ contract MetaCoin {
     }
 
     function getWinnings() returns (uint){
-        var winnings = initialAccountBalance*members.length; 
+        var prize = initialAccountBalance*members.length; 
         return winnings; 
     }
 
