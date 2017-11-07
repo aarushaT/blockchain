@@ -20,7 +20,7 @@ contract MetaCoin {
     mapping (address => Account) public accounts;
     mapping (string => address) emails;
     uint max_members;
-    uint public ticket_amount = 200; //meta
+    uint public ticket_amount = 2; //meta
     uint initialAccountBalance;
 
     address[] public members;
@@ -28,7 +28,7 @@ contract MetaCoin {
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from);
     //event LotteryEnded(uint amount_won);
-    event lotteryWon(bool true); 
+    event LotteryWon(bool won);
 
     modifier only_admin() {
         require(msg.sender == admin);
@@ -37,8 +37,8 @@ contract MetaCoin {
 
     function MetaCoin() {
         admin = tx.origin;
-        accounts[admin].balance = 10000;
-        initialAccountBalance = 1000;
+        accounts[admin].balance = 0;
+        initialAccountBalance = 20;
         accounts[admin].name = "Administrator";
         max_members = 10;
     }
@@ -82,19 +82,21 @@ contract MetaCoin {
         require(addr != admin);
         require(accounts[addr].balance >= ticket_amount);
         accounts[addr].balance -= ticket_amount;
+        accounts[admin] += ticket_amount;
         CollectedFunds(addr);
-    }
+    }    
 
-    
-
-    function setLotterynumber (uint lottery_number) returns (uint){
+    function setLotterynumber(uint lottery_number) returns (uint){
         return lottery_number; 
 
     }
 
-    function checkNumbers (uint winning_number, uint number) returns(bool){
-        if (winning_number == number)
-        return true; 
+    function checkNumbers(uint winning_number, uint number) returns(bool){
+        if (winning_number == number) {
+            LotteryWon(true);
+            return true;
+        }
+        return false;
     }
 
 

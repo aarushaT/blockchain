@@ -312,15 +312,41 @@ window.getAddress = function (member_email){
 
 }
 
-window.getMemberAddressFromTable = function($member_email) {
-    var email_cells = $(".member-table-body").find("td:even");
-    for (var i=0; i < email_cells.length; i++) {
-        if ($(email_cells[i]).text() == $.trim($member_email)) {
-            return $(email_cells[i]).parent("tr").attr("id");
+window.getLotteryNumbers = function() {
+    var $ticket = $("#ticket_number");
+    var $winning = $("#winning_number");
+    var meta;
+    
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.checkNumbers.call($ticket.val(), $winning.val(), { from: admin_account });
+    }).then(function(result) {
+        if(result == false) {
+            console.log("No win");
+            generateTicket(5);
         }
-    }
-    return null;    
+        else {
+            console.log("WON!!!!");
+        }
+    }).catch(function(err) {
+        console.log(err);
+        console.log("Check numbers failed");
+    });
 }
+
+window.generateTicket = function(range = 5) {
+    var ticket_number = Math.floor(Math.random() * range) + 1;
+    var $ticket = $("#ticket_number");
+    $ticket.val(ticket_number);
+}
+
+window.checkNumbers = function() {
+
+}
+
+
+
+
 
 $(document).ready(function() {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
@@ -353,5 +379,6 @@ $(document).ready(function() {
     
         updateMembers();
         setMemberTable();
+        generateTicket(5);
     });
 })
