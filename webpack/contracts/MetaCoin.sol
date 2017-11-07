@@ -101,17 +101,7 @@ contract MetaCoin {
         return lottery_number; 
     }
 
-    function checkNumbers(uint winning_number, uint number) returns(bool){
-        if (winning_number == number) {
-            LotteryWon(true);
-            collectFunds(); 
-            return true;
-        }
-        collectFunds();
-        return false;
-         
-    }
-
+   
     function getWinnings() returns (uint){
         var prize = initialAccountBalance*members.length; 
         return winnings; 
@@ -145,5 +135,17 @@ contract MetaCoin {
      function getAddress (string member_email) only_admin returns (address){
         return emails[member_email]; 
     }
+
+     function checkNumbers(uint winning_number, uint number) returns(bool){
+        if (winning_number == number) {
+            distributeFunds(); 
+            LotteryWon(true);
+            return true;
+        }
+        collectFunds();
+        return false;
+         
+    }
+
 }
 
