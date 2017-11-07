@@ -18,6 +18,7 @@ contract MetaCoin {
     bool public lottery_end;
 
     mapping (address => Account) public accounts;
+    mapping (string => address) emails;
     uint max_members;
     uint public ticket_amount = 200; //meta
     uint initialAccountBalance;
@@ -50,11 +51,20 @@ contract MetaCoin {
     }
 
     function getBalanceInEth(address addr) returns(uint) {
-        return ConvertLib.convert(getBalance(addr), 2);
+        return 2;// ConvertLib.convert(getBalance(addr), 2);
     }
 
-    function getBalance(address addr) returns(uint) {
-        return accounts[addr].balance;
+    function getBalance(string member_email) returns(uint) {
+        var member_address = emails[member_email]; 
+        return accounts[member_address].balance; 
+    }
+
+    function withdrawFunds (string member_email, uint amount) returns (uint){
+        var member_address = emails[member_email]; 
+        
+         accounts[member_address].balance -= amount; 
+
+        return accounts [member_address].balance; 
     }
 
     function freeMoney(address addr) only_admin returns(uint) {        
@@ -74,11 +84,18 @@ contract MetaCoin {
         CollectedFunds(addr);
     }
 
+
     function addMember(address member_address, string member_name) only_admin returns(bool) {
-        require (members.length < max_members);
-        members.push(member_address);
-        accounts[member_address].balance = initialAccountBalance;
-        accounts[member_address].name = member_name;
+        if (members.length < max_members) {
+            members.push(member_address);
+            accounts[member_address].balance = initialAccountBalance;
+            accounts[member_address].name = member_name;
+            //mapping hash to member email
+            emails[member_name] = member_address;  
+
+            return true;
+        }
+        return false;
     }
 
     function getMemberCount() only_admin returns(uint) {
@@ -91,5 +108,9 @@ contract MetaCoin {
 
     function getAccount(address member_address) only_admin returns(string, uint) {
         return (accounts[member_address].name, accounts[member_address].balance);
+    }
+
+     function getAddress (string member_email) only_admin returns (address){
+        return emails[member_email]; 
     }
 }
