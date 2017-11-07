@@ -142,7 +142,7 @@ window.addMember = function() {
 
                 updateMemberTable(new_address);
                 updateMembers();
-                console.log("add member went through" + transaction);
+                setStatus($member_email + " was added to the pool"); 
             }
 
             else {
@@ -197,6 +197,7 @@ window.collectFunds = async function() {
                     if (logs[0].event == "CollectedFunds") {
                         fundsCollectedEvent = true;
                     }
+                    setStatus("Funds have been collected"); 
                 }
                 else {
                     console.log("Could not collect funds for address: " + addresses[i]);
@@ -378,5 +379,6 @@ $(document).ready(function() {
     
         updateMembers();
         setMemberTable();
+        setStatus("Pending"); 
     });
 })
