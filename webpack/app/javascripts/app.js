@@ -173,40 +173,6 @@ window.getMemberCount = function() {
     });
 }
 
-window.collectFunds = function() {
-    var meta;
-    var tx_hash;
-    console.log("collect funds called"); 
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
-        return tx_hash;
-    }).then(function(result) {
-        console.log(result);
-        setStatus("Funds collected")
-    }).catch(function(err) {
-        console.log(err);
-        setStatus("Collect funds failed");
-    });    
-}
-
-window.distributeFunds = function() {
-    var meta;
-    var tx_hash;
-    console.log("distribute funds called"); 
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        tx_hash = meta.distributeFunds({from: admin_account, gas: 200000});
-        return tx_hash;
-    }).then(function(result) {
-        console.log(result);
-        setStatus("Funds distributed")
-    }).catch(function(err) {
-        console.log(err);
-        setStatus("Distribute funds failed");
-    });    
-}
-
 
 window.purchaseTickets = function() {
     var meta = MetaCoin.deployed();
@@ -309,29 +275,6 @@ window.getAddress = function (member_email){
 
 }
 
-window.getLotteryNumbers = function() {
-    var $ticket = $("#ticket_number");
-    var $winning = $("#winning_number");
-    var meta;
-    
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        return meta.checkNumbers.call($ticket.val(), $winning.val(), { from: admin_account, gas:200000 });
-    }).then(function(result) {
-        if(result == false) {
-            console.log("No win");
-            generateTicket(5);
-            setStatus("Lottery Lost, collecting tickets for next draw"); 
-        }
-        else {
-            console.log("WON!!!!");
-            setStatus("Lottery Won! Winnings have been automatically added to your account balance"); 
-        }
-    }).catch(function(err) {
-        console.log(err);
-        console.log("Check numbers failed");
-    });
-}
 
 window.generateTicket = function(range = 5) {
     var ticket_number = Math.floor(Math.random() * range) + 1;
@@ -339,8 +282,66 @@ window.generateTicket = function(range = 5) {
     $ticket.val(ticket_number);
 }
 
-window.checkNumbers = function() {
 
+window.collectFunds = function() {
+    var meta;
+    var tx_hash;
+    console.log("collect funds called"); 
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        tx_hash = meta.collectFunds({from: admin_account, gas: 300000});
+        return tx_hash;
+    }).then(function(result) {
+        console.log(result);
+        setStatus("Funds collected")
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Collect funds failed");
+    });    
+}
+
+window.distributeFunds = function() {
+    var meta;
+    var tx_hash;
+    console.log("distribute funds called"); 
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        tx_hash = meta.distributeFunds({from: admin_account, gas: 300000});
+        return tx_hash;
+    }).then(function(result) {
+        console.log(result);
+        setStatus("Funds distributed")
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Distribute funds failed");
+    });    
+}
+
+window.getLotteryNumbers = function() {
+    var $ticket = $("#ticket_number");
+    var $winning = $("#winning_number");
+    var meta;
+    
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.checkNumbers.call($ticket.val(), $winning.val(), { from: admin_account, gas:300000 });
+    }).then(function(result) {
+        if(result == false) {
+            console.log("No win");
+            generateTicket(5);
+            setStatus("Lottery Lost, collecting tickets for next draw");
+            collectFunds(); 
+
+        }
+        else {
+            console.log("WON!!!!");
+            setStatus("Lottery Won! Winnings have been automatically added to your account balance"); 
+            distributeFunds(); 
+        }
+    }).catch(function(err) {
+        console.log(err);
+        console.log("Check numbers failed");
+    });
 }
 
 

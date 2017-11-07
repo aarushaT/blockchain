@@ -138,11 +138,11 @@ contract MetaCoin {
 
      function checkNumbers(uint winning_number, uint number) returns(bool){
         if (winning_number == number) {
-            distributeFunds(); 
+            //distributeFunds(); 
             LotteryWon(true);
             return true;
         }
-        collectFunds();
+        //collectFunds();
         return false;
          
     }
