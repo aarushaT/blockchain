@@ -173,43 +173,40 @@ window.getMemberCount = function() {
     });
 }
 
-window.collectFunds = async function() {
-    var meta = MetaCoin.deployed();
-
-    var addresses_promise = meta.then(function(instance) {
+window.collectFunds = function() {
+    var meta;
+    var tx_hash;
+    console.log("collect funds called"); 
+    MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.getMemberAddresses.call();
-    }).catch(function (err) {
-        console.log("Could not get addresses");
+        tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
+        return tx_hash;
+    }).then(function(result) {
+        console.log(result);
+        setStatus("Funds collected")
+    }).catch(function(err) {
         console.log(err);
-    });
-
-    Promise.all([meta, addresses_promise]).then(async function(results) {
-        var contract_instance = results[0];
-        var addresses = results[1];
-        
-        for (var i=0; i < addresses.length; i++) {
-            await contract_instance.collectFunds(addresses[i], { from: admin_account }).then(function(result) {
-                var fundsCollectedEvent = false;
-                if (result.logs) {
-                    console.log("Collected funds for address: " + addresses[i]);
-                    var logs = result.logs;
-                    if (logs[0].event == "CollectedFunds") {
-                        fundsCollectedEvent = true;
-                    }
-                    setStatus("Funds have been collected"); 
-                }
-                else {
-                    console.log("Could not collect funds for address: " + addresses[i]);
-                }
-            }).catch(function(err) {
-                console.log(err);
-                console.log("Collect funds failed for address: " + addresses[i] + ": balance too low");
-                setStatus("Collect funds failed for address: " + addresses[i] + ": balance too low");
-            });
-        }
-    });
+        setStatus("Collect funds failed");
+    });    
 }
+
+window.distributeFunds = function() {
+    var meta;
+    var tx_hash;
+    console.log("distribute funds called"); 
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        tx_hash = meta.distributeFunds({from: admin_account, gas: 200000});
+        return tx_hash;
+    }).then(function(result) {
+        console.log(result);
+        setStatus("Funds distributed")
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Distribute funds failed");
+    });    
+}
+
 
 window.purchaseTickets = function() {
     var meta = MetaCoin.deployed();
