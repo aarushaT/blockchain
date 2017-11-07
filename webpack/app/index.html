@@ -65,9 +65,7 @@
                 <div class="row form-group pl-3">
                     <div class="col">
                         <h4><strong>Withdraw Money From Pool</strong></h4>
-
                         <h5> Enter Email </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. aarusha.thakral@example.com"></input>
-
                         <h5 class="my-2">Enter amount desired</h5><input type="number" class="form-control form-control-lg" placeholder="e.g. 200"></input>
                         <button class="btn btn-primary btn-lg my-3">Withdraw Money</button>
                         <br/>
@@ -77,8 +75,11 @@
                     <div class="col">
                         <h4><strong>Check Member Balance</strong></h4>
                         <h5> Enter Email </h5>
-                        <input type="text" class="form-control form-control-lg" placeholder="e.g. emma.swarney@example.com"></input>
-                        <button class="btn btn-primary btn-lg my-3">Check Balance</button>
+                        <input type="text" class="form-control form-control-lg" id="id_check_balance_email" placeholder="e.g. emma.swarney@example.com"></input>
+                        <button class="btn btn-primary btn-lg my-3" onclick="checkBalance()">Check Balance</button>
+                        <div class="row">
+                            <div class="pl-3" id="check_balance_div"></div>
+                        </div>
                     </div>                                                
                 </div>
             </div>
@@ -88,7 +89,7 @@
                 <div class="row form-group">
                     <div class="col"> 
                         <h4><strong>Set Ticket Price</strong></h4>                        
-                        <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300"></input>
+                        <h5> Enter Ticket Price </h5><input type="text" class="form-control form-control-lg" placeholder="e.g. 300" value="200 META" disabled></input>
                         <button class="btn btn-primary btn-lg my-3">Set Price</button>
                         <br>
                     </div>
@@ -116,10 +117,10 @@
                                     </a>
                                 </h5>
                             </div>
-                            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                                 <div class="card-body">
-                                    <table class="table member-table table-striped">
-                                        <thead class="thead-light ">
+                                    <table class="table member-table table-striped" style="overflow: scroll">
+                                        <thead class="thead-">
                                             <tr>
                                                 <th>Email</th>
                                                 <th>Balance</th>

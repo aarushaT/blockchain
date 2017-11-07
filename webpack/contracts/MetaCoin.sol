@@ -12,7 +12,6 @@ contract MetaCoin {
     struct Account {
         string name;
         uint balance;
-        bool exists;
     }
     
     address public admin;
@@ -39,7 +38,6 @@ contract MetaCoin {
         accounts[admin].balance = 10000;
         initialAccountBalance = 1000;
         accounts[admin].name = "Administrator";
-        accounts[admin].exists = true;
         max_members = 10;
     }
 
@@ -68,26 +66,19 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function collectFunds() only_admin returns(bool) {
-        if (members.length > 0) {
-            for(uint i = 0; i < members.length; i++) {
-                accounts[members[i]].balance -= ticket_amount;
-                CollectedFunds(members[i]);
-            }
-            return true;
-        }
-        return false;    
+    function collectFunds(address addr) only_admin {
+        require (members.length > 0);
+        require(addr != admin);
+        require(accounts[addr].balance >= ticket_amount);
+        accounts[addr].balance -= ticket_amount;
+        CollectedFunds(addr);
     }
 
     function addMember(address member_address, string member_name) only_admin returns(bool) {
-        if (members.length < max_members) {
-            members.push(member_address);
-            accounts[member_address].balance = initialAccountBalance;
-            accounts[member_address].name = member_name;
-            accounts[member_address].exists = true;
-            return true;
-        }
-        return false;
+        require (members.length < max_members);
+        members.push(member_address);
+        accounts[member_address].balance = initialAccountBalance;
+        accounts[member_address].name = member_name;
     }
 
     function getMemberCount() only_admin returns(uint) {

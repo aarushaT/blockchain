@@ -31,20 +31,7 @@ window.updateMembers = function() {
     }).catch(function(err) {
         cosole.log("Could not retrieve member count");
         console.log(err);
-    });
-    
-}
-
-window.signUp = function() {
-    var $name = $("#signee_name").val().toUpperCase();
-    if ($name) {
-        
-        // setStatus(member_names[num_signed_up - 1] + " has signed up for lottery");
-        // updatemembers();
-    }
-    else {
-        setStatus("Please enter an email");
-    }
+    });    
 }
 
 window.isValidEmail = function ($email) {
@@ -52,39 +39,37 @@ window.isValidEmail = function ($email) {
   return emailReg.test( $email );
 }
 
-
-
 window.setStatus = function(message) {
     $("#status").text("Status: " + message);
 }
 
-window.refreshAdminBalance = function() {
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        return meta.getBalance.call(admin_account, { from: admin_account });
-    }).then(function(value) {
-        var balance_element = document.getElementById("balance");
-        balance_element.innerHTML = value.valueOf();
-    }).catch(function(e) {
-        console.log(e);
-        setStatus("Error getting balance; see log.");
-    });
-}
+// window.refreshAdminBalance = function() {
+//     var meta;
+//     MetaCoin.deployed().then(function(instance) {
+//         meta = instance;
+//         return meta.getBalance.call(admin_account, { from: admin_account });
+//     }).then(function(value) {
+//         var balance_element = document.getElementById("balance");
+//         balance_element.innerHTML = value.valueOf();
+//     }).catch(function(e) {
+//         console.log(e);
+//         setStatus("Error getting balance; see log.");
+//     });
+// }
 
-window.showBalance = function() {
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        return meta.getBalance.call(admin_account, { from: admin_account });
-    }).then(function(value) {
-        var balance_element = document.getElementById("balance_span");
-        balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
-    }).catch(function(e) {
-        console.log(e);
-        setStatus("Error getting balance; see log.");
-    });
-}
+// window.showBalance = function() {
+//     var meta;
+//     MetaCoin.deployed().then(function(instance) {
+//         meta = instance;
+//         return meta.getBalance.call(admin_account, { from: admin_account });
+//     }).then(function(value) {
+//         var balance_element = document.getElementById("balance_span");
+//         balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
+//     }).catch(function(e) {
+//         console.log(e);
+//         setStatus("Error getting balance; see log.");
+//     });
+// }
 
 window.sendCoin = function() {
     var amount = parseInt(document.getElementById("amount").value);
@@ -110,20 +95,29 @@ window.sendCoin = function() {
     });
 }
 
-window.getBalance = function() {
-    var member = document.getElementById("id_member").value;
+window.checkBalance = function() {
+    var member_email = $("#id_check_balance_email").val();
+    
+    var member_address = getMemberAddressFromTable(member_email);
+    var $balance_element = $("#check_balance_div");
 
-    var balance_element = document.getElementById("balance_span");
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        return meta.getBalance.call(member, { from: member });
-    }).then(function(value) {
-        balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
-    }).catch(function(e) {
-        balance_element.innerHTML = e;
-        setStatus("Error retrieving balance; see log.");
-    });
+    if (member_address != null) {
+        
+        var meta;
+        MetaCoin.deployed().then(function(instance) {
+            meta = instance;
+            return meta.getBalance.call(member_address, { from: member_address });
+        }).then(function(value) {
+            $balance_element.html("Balance = " + value.valueOf() + " META");
+        }).catch(function(e) {
+            $balance_element.html("Could not retrieve balance");
+            setStatus("Error retrieving balance; see log.");
+        });
+    }
+    else {
+        console.log("Invalid email: member does not exist");
+        $balance_element.html("Invalid email: member does not exist");
+    }
 }
 
 window.freeMoney = function() {
@@ -149,7 +143,7 @@ window.addMember = function() {
     var new_address;
 
     if (isValidEmail($member_email)) {
-        Promise.all([count_promise, contract_promise]).then(function (results) {
+        Promise.all([count_promise, contract_promise]).then(function(results) {
             var num_members = results[0].toNumber();
             var contract_instance = results[1];
             if (num_members < (accounts.length-1)) {
@@ -164,6 +158,7 @@ window.addMember = function() {
                 console.log("Could not add: too many accounts!");
             }
             }).catch(function(err) {
+                setStatus("Sign up failed");
                 console.log("Sign up failed");
                 console.log(err);
             });
@@ -174,7 +169,7 @@ window.addMember = function() {
     }
 }
 
-window.getMemberCount = function () {
+window.getMemberCount = function() {
     var meta;
     var member_count;
     return MetaCoin.deployed().then(function(instance) {
@@ -186,20 +181,54 @@ window.getMemberCount = function () {
     });
 }
 
-window.collectFunds = function() {
-    var meta;
-    var tx_hash;
-    MetaCoin.deployed().then(function(instance) {
+window.collectFunds = async function() {
+    var meta = MetaCoin.deployed();
+
+    var addresses_promise = meta.then(function(instance) {
         meta = instance;
-        tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
-        return tx_hash;
-    }).then(function(result) {
-        console.log(result);
-        setStatus("Funds collected")
-    }).catch(function(err) {
+        return meta.getMemberAddresses.call();
+    }).catch(function (err) {
+        console.log("Could not get addresses");
         console.log(err);
-        setStatus("Collect funds failed");
-    });    
+    });
+
+    Promise.all([meta, addresses_promise]).then(async function(results) {
+        var contract_instance = results[0];
+        var addresses = results[1];
+        
+        for (var i=0; i < addresses.length; i++) {
+            await contract_instance.collectFunds(addresses[i], { from: admin_account }).then(function(result) {
+                var fundsCollectedEvent = false;
+                if (result.logs) {
+                    console.log("Collected funds for address: " + addresses[i]);
+                    var logs = result.logs;
+                    if (logs[0].event == "CollectedFunds") {
+                        fundsCollectedEvent = true;
+                    }
+                }
+                else {
+                    console.log("Could not collect funds for address: " + addresses[i]);
+                }
+            }).catch(function(err) {
+                console.log(err);
+                console.log("Collect funds failed for address: " + addresses[i] + ": balance too low");
+                setStatus("Collect funds failed for address: " + addresses[i] + ": balance too low");
+            });
+        }
+    });
+}
+
+window.purchaseTickets = function() {
+    var meta = MetaCoin.deployed();
+    var fundsCollected = false;
+    for (var i = 0; i < result.logs.length; i++) {
+        var log = result.logs[i];
+
+        if (log.event == "CollectedFunds") {
+            fundsCollected = true;
+            break;
+        }
+    }  
 }
 
 window.setMemberTable = async function() {
@@ -234,8 +263,8 @@ window.setMemberTable = async function() {
             await contract_instance.getAccount.call(member_addresses[i]).then(function(account) {
                 account_name = account[0];
                 account_balance = account[1].toNumber();
-                var $name = $("<td>").text(account_name);
-                var $balance = $("<td>").text(account_balance);
+                var $name = $("<td>", {class: "col-1"}).text(account_name);
+                var $balance = $("<td>", {class: "col-1"}).text(account_balance);
                 $new_row = $new_row.append($name);
                 $new_row = $new_row.append($balance);
                 $(".member-table-body").append($new_row);
@@ -273,6 +302,16 @@ window.updateMemberTable = function(address) {
         console.log("Could not add: too many accounts or invalid address!");
         setStatus("Reached member limit");
     }
+}
+
+window.getMemberAddressFromTable = function($member_email) {
+    var email_cells = $(".member-table-body").find("td:even");
+    for (var i=0; i < email_cells.length; i++) {
+        if ($(email_cells[i]).text() == $.trim($member_email)) {
+            return $(email_cells[i]).parent("tr").attr("id");
+        }
+    }
+    return null;    
 }
 
 $(document).ready(function() {
