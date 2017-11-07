@@ -27,7 +27,8 @@ contract MetaCoin {
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from);
-    event LotteryEnded(uint amount_won);
+    //event LotteryEnded(uint amount_won);
+    event lotteryWon(bool true); 
 
     modifier only_admin() {
         require(msg.sender == admin);
@@ -82,6 +83,18 @@ contract MetaCoin {
         require(accounts[addr].balance >= ticket_amount);
         accounts[addr].balance -= ticket_amount;
         CollectedFunds(addr);
+    }
+
+    
+
+    function setLotterynumber (uint lottery_number) returns (uint){
+        return lottery_number; 
+
+    }
+
+    function checkNumbers (uint winning_number, uint number) returns(bool){
+        if (winning_number == number)
+        return true; 
     }
 
 
