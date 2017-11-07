@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="col text-center">
-                <div class="alert alert-info">We currently have&nbsp;<span id="num_members_span"></span>&nbsp;members</div>
+                <div class="alert alert-success">&nbsp;<span id="status"></span></div>
             </div>
         </div>
 
@@ -38,9 +38,9 @@
                         <h4><strong>Welcome to the Empire Life Blockchain Lottery Application!</strong></h4>
                         Here are the rules: 
                         <ol>
-                            <li>Each ticket costs 200 ether (a cryptocurrency) </li>
+                            <li>Each ticket costs 2 dollars</li>
                             <li>Draws will occur twice a week on Wednesdays and Saturdays</li>
-                            <li>Upon sign up, each member will have 1000 ether deposited<br> 
+                            <li>Upon sign up, each member will have 20 dollars deposited<br> 
                             in their account</li>
 
                         </ol>    
@@ -79,6 +79,7 @@
                         <h5> Enter Email </h5>
                         <input type="text" class="form-control form-control-lg" id="id_member" placeholder="e.g. emma.swarney@example.com"></input>
                         <button class="btn btn-primary btn-lg my-3" onclick ="getBalance()">Check Balance</button>
+                        <span  id="balance_span"></span> 
                     </div>                                                
                 </div>
             </div>

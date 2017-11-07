@@ -88,7 +88,6 @@ contract MetaCoin {
 
     function setLotterynumber(uint lottery_number) returns (uint){
         return lottery_number; 
-
     }
 
     function checkNumbers(uint winning_number, uint number) returns(bool){
