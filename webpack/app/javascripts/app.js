@@ -71,18 +71,17 @@ window.getBalance = function() {
 
     var member = document.getElementById("id_member").value;
     console.log (member + " is the member"); 
-
     var balance_element = document.getElementById("balance_span");
     var meta;
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
         return meta.getBalance.call(member.toString(), { from: admin_account });
-    }).then(function(result) {
-        console.log(result + " is value"); 
-        //balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
-    // }).catch(function(e) {
-    //     balance_element.innerHTML = "didn't work";
-    //     setStatus("Error retrieving balance; see log.");
+    }).then(function(value) {
+        console.log(value + " is value"); 
+        balance_element.innerHTML = "Balance = " + value.valueOf() + " Dollars";
+     }).catch(function(e) {
+         balance_element.innerHTML = "didn't work";
+         setStatus("Error retrieving balance; see log.");
     });
 
 }
