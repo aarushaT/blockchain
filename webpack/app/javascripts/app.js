@@ -43,34 +43,6 @@ window.setStatus = function(message) {
     $("#status").text("Status: " + message);
 }
 
-// window.refreshAdminBalance = function() {
-//     var meta;
-//     MetaCoin.deployed().then(function(instance) {
-//         meta = instance;
-//         return meta.getBalance.call(admin_account, { from: admin_account });
-//     }).then(function(value) {
-//         var balance_element = document.getElementById("balance");
-//         balance_element.innerHTML = value.valueOf();
-//     }).catch(function(e) {
-//         console.log(e);
-//         setStatus("Error getting balance; see log.");
-//     });
-// }
-
-// window.showBalance = function() {
-//     var meta;
-//     MetaCoin.deployed().then(function(instance) {
-//         meta = instance;
-//         return meta.getBalance.call(admin_account, { from: admin_account });
-//     }).then(function(value) {
-//         var balance_element = document.getElementById("balance_span");
-//         balance_element.innerHTML = "Balance = " + value.valueOf() + " META";
-//     }).catch(function(e) {
-//         console.log(e);
-//         setStatus("Error getting balance; see log.");
-//     });
-// }
-
 window.sendCoin = function() {
     var amount = parseInt(document.getElementById("amount").value);
     var receiver = document.getElementById("id_receiver").value;
@@ -284,8 +256,8 @@ window.setMemberTable = async function() {
             await contract_instance.getAccount.call(member_addresses[i]).then(function(account) {
                 account_name = account[0];
                 account_balance = account[1].toNumber();
-                var $name = $("<td>", {class: "col-1"}).text(account_name);
-                var $balance = $("<td>", {class: "col-1"}).text(account_balance);
+                var $name = $("<td>").text(account_name);
+                var $balance = $("<td>").text(account_balance);
                 $new_row = $new_row.append($name);
                 $new_row = $new_row.append($balance);
                 $(".member-table-body").append($new_row);
