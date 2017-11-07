@@ -27,6 +27,7 @@ contract MetaCoin {
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event CollectedFunds(address indexed _from);
+    event DistributedFunds(address indexed _to); 
     //event LotteryEnded(uint amount_won);
     event LotteryWon(bool won);
 
@@ -39,6 +40,7 @@ contract MetaCoin {
         admin = tx.origin;
         accounts[admin].balance = 0;
         initialAccountBalance = 20;
+        winnings = 20; 
         accounts[admin].name = "Administrator";
         max_members = 10;
     }
@@ -82,9 +84,18 @@ contract MetaCoin {
         require(addr != admin);
         require(accounts[addr].balance >= ticket_amount);
         accounts[addr].balance -= ticket_amount;
-        accounts[admin] += ticket_amount;
+        accounts[admin].balance += ticket_amount;
         CollectedFunds(addr);
     }    
+
+
+    function distributeFunds (address addr) only_admin {
+        require (members.length > 0);
+        require(addr != admin);
+        accounts[addr].balance += winnings;
+        accounts[admin].balance -= winnings;
+        DistributedFunds(addr); 
+    }
 
     function setLotterynumber(uint lottery_number) returns (uint){
         return lottery_number; 
@@ -93,11 +104,17 @@ contract MetaCoin {
     function checkNumbers(uint winning_number, uint number) returns(bool){
         if (winning_number == number) {
             LotteryWon(true);
+            distributeFunds(); 
             return true;
         }
         return false;
+        collectFunds(); 
     }
 
+    function getWinnings() returns (uint){
+        var winnings = initialAccountBalance*members.length; 
+        return winnings; 
+    }
 
     function addMember(address member_address, string member_name) only_admin returns(bool) {
         if (members.length < max_members) {
