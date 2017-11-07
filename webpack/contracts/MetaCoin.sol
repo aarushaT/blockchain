@@ -22,7 +22,7 @@ contract MetaCoin {
     uint max_members;
     uint public ticket_amount = 2; //meta
     uint initialAccountBalance;
-    uint public winnings = 20; 
+    uint public winnings = 200; 
 
 
     address[] public members;
@@ -92,7 +92,7 @@ contract MetaCoin {
     function distributeFunds () only_admin {
          //require (members.length > 0); 
         for(uint i = 0; i < members.length; i++) {
-            accounts[members[i]].balance += winnings;
+            accounts[members[i]].balance += 200;
             DistributedFunds(members[i]);
         }
     }
@@ -104,7 +104,7 @@ contract MetaCoin {
     function checkNumbers(uint winning_number, uint number) returns(bool){
         if (winning_number == number) {
             LotteryWon(true);
-            distributeFunds(); 
+            collectFunds(); 
             return true;
         }
         collectFunds();

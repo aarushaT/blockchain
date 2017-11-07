@@ -316,7 +316,7 @@ window.getLotteryNumbers = function() {
     
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.checkNumbers.call($ticket.val(), $winning.val(), { from: admin_account });
+        return meta.checkNumbers.call($ticket.val(), $winning.val(), { from: admin_account, gas:200000 });
     }).then(function(result) {
         if(result == false) {
             console.log("No win");
