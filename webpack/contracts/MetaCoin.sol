@@ -22,6 +22,8 @@ contract MetaCoin {
     uint max_members;
     uint public ticket_amount = 2; //meta
     uint initialAccountBalance;
+    uint public winnings = 20; 
+
 
     address[] public members;
 
@@ -39,8 +41,7 @@ contract MetaCoin {
     function MetaCoin() {
         admin = tx.origin;
         accounts[admin].balance = 0;
-        initialAccountBalance = 20;
-        winnings = 20; 
+        initialAccountBalance = 20; 
         accounts[admin].name = "Administrator";
         max_members = 10;
     }
@@ -79,22 +80,21 @@ contract MetaCoin {
         return ticket_amount;
     }
 
-    function collectFunds(address addr) only_admin {
-        require (members.length > 0);
-        require(addr != admin);
-        require(accounts[addr].balance >= ticket_amount);
-        accounts[addr].balance -= ticket_amount;
-        accounts[admin].balance += ticket_amount;
-        CollectedFunds(addr);
-    }    
-
-
-    function distributeFunds (address addr) only_admin {
-        require (members.length > 0);
-        require(addr != admin);
-        accounts[addr].balance += winnings;
-        accounts[admin].balance -= winnings;
-        DistributedFunds(addr); 
+    function collectFunds() only_admin{
+        require (members.length > 0); 
+        for(uint i = 0; i < members.length; i++) {
+            accounts[members[i]].balance -= ticket_amount;
+            CollectedFunds(members[i]);
+        }
+          
+    }
+   
+    function distributeFunds () only_admin {
+         //require (members.length > 0); 
+        for(uint i = 0; i < members.length; i++) {
+            accounts[members[i]].balance += winnings;
+            DistributedFunds(members[i]);
+        }
     }
 
     function setLotterynumber(uint lottery_number) returns (uint){
@@ -107,12 +107,13 @@ contract MetaCoin {
             distributeFunds(); 
             return true;
         }
+        collectFunds();
         return false;
-        collectFunds(); 
+         
     }
 
     function getWinnings() returns (uint){
-        var winnings = initialAccountBalance*members.length; 
+        var prize = initialAccountBalance*members.length; 
         return winnings; 
     }
 
@@ -145,3 +146,4 @@ contract MetaCoin {
         return emails[member_email]; 
     }
 }
+
