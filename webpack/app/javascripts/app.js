@@ -312,6 +312,32 @@ window.getAddress = function (member_email){
 
 }
 
+window.getLotteryNumbers= function () {
+    var winning = $("#winning_numbers").val(); 
+    var ours = $("#our_numbers").val(); 
+    var meta 
+
+    console.log(winning); 
+    console.log (ours); 
+
+    
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance 
+        return meta.checkNumbers.call(winning, ours, { from: admin_account }); 
+    }).then(function(result){
+        console.log(result); 
+    }).catch(function(err){
+        console.log(err); 
+        console.log("Check numbers failed"); 
+    }); 
+
+}
+
+window.checkNumbers = function (){
+
+}
+
+
 window.getMemberAddressFromTable = function($member_email) {
     var email_cells = $(".member-table-body").find("td:even");
     for (var i=0; i < email_cells.length; i++) {
