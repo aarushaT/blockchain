@@ -127,6 +127,30 @@ window.getBalance = function() {
     //     balance_element.innerHTML = "didn't work";
     //     setStatus("Error retrieving balance; see log.");
     });
+
+}
+
+window.withdrawFunds = function() {
+    var member = document.getElementById("withdraw_member").value;
+    var amount = document.getElementById("withdraw_amt").value;
+
+    console.log("member is " + member);
+    console.log("amount is " + amount); 
+
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        var tx_hash;
+        console.log("made it to here!");
+        tx_hash = meta.withdrawFunds(member.toString(), amount, {from: admin_account, gas: 200000}); 
+        return tx_hash; 
+         }).then(function(result) {
+        console.log(result);
+        setStatus("funds withdrew")
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Withdraw funds failed");
+    });    
 }
 
 window.freeMoney = function() {
@@ -279,6 +303,21 @@ window.updateMemberTable = function(address) {
         console.log("Could not add: too many accounts or invalid address!");
         setStatus("Reached member limit");
     }
+}
+
+window.getAddress = function (member_email){
+    var meta 
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        return meta.getAddress.call(member_email.toString(), { from: admin_account }); 
+    }).then(function(value) {
+        console.log(value); 
+        setStatus("Error retrieving balance; see log.");
+    }).catch(function(e) {
+        console.log(e);
+        setStatus("Error retrieving balance; see log.");
+    });
+
 }
 
 $(document).ready(function() {

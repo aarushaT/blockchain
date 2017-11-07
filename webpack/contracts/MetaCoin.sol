@@ -63,7 +63,10 @@ contract MetaCoin {
 
     function withdrawFunds (string member_email, uint amount) returns (uint){
         var member_address = emails[member_email]; 
+        
+         accounts[member_address].balance -= amount; 
 
+        return accounts [member_address].balance; 
     }
 
     function freeMoney(address addr) only_admin returns(uint) {        
@@ -110,5 +113,9 @@ contract MetaCoin {
 
     function getAccount(address member_address) only_admin returns(string, uint) {
         return (accounts[member_address].name, accounts[member_address].balance);
+    }
+
+     function getAddress (string member_email) only_admin returns (address){
+        return emails[member_email]; 
     }
 }
