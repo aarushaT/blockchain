@@ -1,30 +1,49 @@
 body {
-  font-family: "Open Sans", sans-serif;
-  font-size: 1.5rem;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.5rem;
 }
 
 input {
-  width: 500px;
-  padding: 5px;
-  font-size: 2rem;
+    width: 500px;
+    padding: 5px;
+    font-size: 2rem;
 }
 
 .green {
-  color: #18980e;
+    color: #18980e;
 }
 
-#balance, #balance_span {
-  color: #18980e;
+#balance,
+#balance_span {
+    color: #18980e;
 }
 
 .hint {
-  color: #555555;
+    color: #555555;
 }
 
 #account_hashes {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 #num_participants_span {
-  color: #fd8508;
+    color: #fd8508;
 }
+
+.rules-header{
+    font-size: 28px; 
+    color: #0d377a;
+    text-decoration: none; 
+}
+
+/* #sign-up-div {
+   border-radius:  0.5rem; 
+   background-color: #057bff;
+   color:  #FFFFFF;
+}
+
+#sign_up_button {
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    color:  #057bff;
+} */
