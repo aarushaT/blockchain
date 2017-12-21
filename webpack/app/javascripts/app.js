@@ -100,7 +100,7 @@ window.withdrawFunds = function() {
         console.log("made it to here!");
         tx_hash = meta.withdrawFunds(member.toString(), amount, {from: admin_account, gas: 200000}); 
         return tx_hash; 
-         }).then(function(result) {
+    }).then(function(result) {
         console.log(result);
         setStatus("funds withdrew")
     }).catch(function(err) {
@@ -173,6 +173,22 @@ window.getMemberCount = function() {
     });
 }
 
+window.collectFunds = function() {
+    var meta;
+    var tx_hash;
+    console.log("collect funds called"); 
+    MetaCoin.deployed().then(function(instance) {
+        meta = instance;
+        tx_hash = meta.collectFunds({from: admin_account, gas: 200000});
+        return tx_hash;
+    }).then(function(result) {
+        console.log(result);
+        setStatus("Funds collected");
+    }).catch(function(err) {
+        console.log(err);
+        setStatus("Collect funds failed");
+    });    
+}
 
 window.purchaseTickets = function() {
     var meta = MetaCoin.deployed();
@@ -275,68 +291,27 @@ window.getAddress = function (member_email){
 
 }
 
-
-window.generateTicket = function(range = 5) {
-    var ticket_number = Math.floor(Math.random() * range) + 1;
-    var $ticket = $("#ticket_number");
-    $ticket.val(ticket_number);
-}
-
-
-window.collectFunds = function() {
-    var meta;
-    var tx_hash;
-    console.log("collect funds called"); 
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        tx_hash = meta.collectFunds({from: admin_account, gas: 300000});
-        return tx_hash;
-    }).then(function(result) {
-        console.log(result);
-        setStatus("Funds collected")
-    }).catch(function(err) {
-        console.log(err);
-        setStatus("Collect funds failed");
-    });    
-}
-
-window.distributeFunds = function() {
-    var meta;
-    var tx_hash;
-    console.log("distribute funds called"); 
-    MetaCoin.deployed().then(function(instance) {
-        meta = instance;
-        tx_hash = meta.distributeFunds({from: admin_account, gas: 300000});
-        return tx_hash;
-    }).then(function(result) {
-        console.log(result);
-        setStatus("Funds distributed")
-    }).catch(function(err) {
-        console.log(err);
-        setStatus("Distribute funds failed");
-    });    
-}
-
-window.getLotteryNumbers = function() {
+window.checkLotteryNumbers = function() {
     var $ticket = $("#ticket_number");
     var $winning = $("#winning_number");
     var meta;
     
+    if (!$ticket.val()) {
+        setStatus("Please enter a valid lottery number");
+        console.log("Please enter a valid lottery number");
+    }
+
     MetaCoin.deployed().then(function(instance) {
         meta = instance;
-        return meta.checkNumbers.call($ticket.val(), $winning.val(), { from: admin_account, gas:300000 });
+        return meta.checkNumbers($ticket.val(), $winning.val(), { from: admin_account, gas: 200000 });
     }).then(function(result) {
-        if(result == false) {
-            console.log("No win");
-            generateTicket(5);
-            setStatus("Lottery Lost, collecting tickets for next draw");
-            collectFunds(); 
-
+        console.log(result);
+        if(result.logs[0] == "LotteryWon") {
+            console.log("WON!!!!");            
+            console.log(result.logs[0].event);
         }
         else {
-            console.log("WON!!!!");
-            setStatus("Lottery Won! Winnings have been automatically added to your account balance"); 
-            distributeFunds(); 
+            console.log("No win");
         }
     }).catch(function(err) {
         console.log(err);
@@ -344,8 +319,15 @@ window.getLotteryNumbers = function() {
     });
 }
 
+window.generateTicket = function(range = 5) {
+    var ticket_number = Math.floor(Math.random() * range) + 1;
+    var $ticket = $("#ticket_number");
+    $ticket.val(ticket_number);
+}
 
+window.checkNumbers = function() {
 
+}
 
 
 $(document).ready(function() {
@@ -379,6 +361,5 @@ $(document).ready(function() {
     
         updateMembers();
         setMemberTable();
-        setStatus("Pending"); 
     });
 })

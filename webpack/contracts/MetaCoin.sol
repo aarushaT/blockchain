@@ -17,13 +17,13 @@ contract MetaCoin {
     address public admin;
     bool public lottery_end;
 
+    uint winning_amount;
+
     mapping (address => Account) public accounts;
     mapping (string => address) emails;
     uint max_members;
     uint public ticket_amount = 2; //meta
     uint initialAccountBalance;
-    uint public winnings = 200; 
-
 
     address[] public members;
 
@@ -31,7 +31,9 @@ contract MetaCoin {
     event CollectedFunds(address indexed _from);
     event DistributedFunds(address indexed _to); 
     //event LotteryEnded(uint amount_won);
-    event LotteryWon(bool won);
+    event LotteryWon();
+    event LotteryEnded();
+    //event DistributedFunds(address indexed _from);
 
     modifier only_admin() {
         require(msg.sender == admin);
@@ -41,9 +43,11 @@ contract MetaCoin {
     function MetaCoin() {
         admin = tx.origin;
         accounts[admin].balance = 0;
-        initialAccountBalance = 20; 
+        initialAccountBalance = 20;
         accounts[admin].name = "Administrator";
+        emails[accounts[admin].name] = admin;
         max_members = 10;
+        winning_amount = 2000;
     }
 
     function sendCoin(address receiver, uint amount) returns(bool sufficient) {
@@ -64,11 +68,10 @@ contract MetaCoin {
     }
 
     function withdrawFunds (string member_email, uint amount) returns (uint){
-        var member_address = emails[member_email]; 
-        
-         accounts[member_address].balance -= amount; 
-
-        return accounts [member_address].balance; 
+        var member_address = emails[member_email];
+        require(accounts[member_address].balance >= amount);        
+        accounts[member_address].balance -= amount;
+        return accounts[member_address].balance;
     }
 
     function freeMoney(address addr) only_admin returns(uint) {        
@@ -88,23 +91,9 @@ contract MetaCoin {
         }
           
     }
-   
-    function distributeFunds () only_admin {
-         //require (members.length > 0); 
-        for(uint i = 0; i < members.length; i++) {
-            accounts[members[i]].balance += 200;
-            DistributedFunds(members[i]);
-        }
-    }
 
-    function setLotterynumber(uint lottery_number) returns (uint){
+    function setLotterynumber(uint lottery_number) returns (uint) {
         return lottery_number; 
-    }
-
-   
-    function getWinnings() returns (uint){
-        var prize = initialAccountBalance*members.length; 
-        return winnings; 
     }
 
     function addMember(address member_address, string member_name) only_admin returns(bool) {
@@ -136,16 +125,21 @@ contract MetaCoin {
         return emails[member_email]; 
     }
 
-     function checkNumbers(uint winning_number, uint number) returns(bool){
-        if (winning_number == number) {
-            //distributeFunds(); 
-            LotteryWon(true);
-            return true;
+    function distributeFunds() {
+        require(members.length > 0);
+        uint winnings_per_account = winning_amount / members.length;
+        for(uint i = 0; i < members.length; i++) {
+            accounts[members[i]].balance += winnings_per_account;
+            DistributedFunds(members[i]);
         }
-        //collectFunds();
-        return false;
-         
+    }
+
+    function checkNumbers(uint winning_number, uint number) {
+        require(members.length > 0);
+        if (winning_number == number) {
+            LotteryWon();
+        }
+        LotteryEnded();
     }
 
 }
-
